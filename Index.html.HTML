@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart E-Library | Perpustakaan Digital Modern</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8; /* Warna latar belakang default */
+            transition: background-image 0.5s ease-in-out;
+        }
+        .app-background {
+            background: linear-gradient(rgba(253, 251, 248, 0.95), rgba(253, 251, 248, 0.95)), url('https://images.unsplash.com/photo-1550399105-c4db5fb85c18?q=80&w=2071&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .book-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .book-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        .modal-bg {
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+        }
+        .rating-stars .lucide-star {
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+        }
+        .rating-stars .lucide-star.filled {
+            color: #f59e0b; /* amber-500 */
+            fill: #f59e0b;
+        }
+        .auth-tab {
+            cursor: pointer;
+            padding: 0.75rem 1rem;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .auth-tab.active {
+            color: #a16207; /* amber-800 */
+            border-bottom-color: #a16207;
+        }
+        .toast {
+            animation: fadeInOut 3s ease-in-out forwards;
+        }
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; transform: translateY(20px); }
+            10%, 90% { opacity: 1; transform: translateY(0); }
+        }
+        .dashboard-tab {
+            transition: all 0.2s ease-in-out;
+        }
+        .dashboard-tab.active {
+            background-color: #fef3c7; /* amber-100 */
+            color: #b45309; /* amber-700 */
+            border-bottom: 2px solid #b45309;
+        }
+        .login-background {
+            background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Kontainer Login & Registrasi -->
+    <div id="authContainer" class="min-h-screen flex items-center justify-center login-background">
+        <div class="max-w-md w-full bg-white p-8 rounded-2xl shadow-lg">
+            <div class="text-center mb-8">
+                 <h1 class="text-3xl font-bold text-amber-900">Selamat Datang di Smart E-Library</h1>
+                 <p class="text-gray-500 mt-2">Silakan masuk untuk memulai.</p>
+            </div>
+            <form id="loginForm">
+                <div class="mb-4">
+                    <label for="loginUsername" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                    <input type="text" id="loginUsername" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-amber-500 focus:border-amber-500" required>
+                </div>
+                <div class="mb-6">
+                    <label for="loginPassword" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="loginPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-amber-500 focus:border-amber-500" required>
+                </div>
+                <p id="loginError" class="text-red-500 text-sm text-center mb-4 hidden"></p>
+                <button type="submit" class="w-full bg-amber-600 text-white py-2.5 rounded-lg font-semibold hover:bg-amber-700 transition">Login</button>
+                 <div class="mt-4 text-xs text-center text-gray-400">
+                    <p>Admin: admin123 / admin123</p>
+                    <p>User: joko / joko123, siti / siti123</p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Kontainer Aplikasi Utama (Hidden by default) -->
+    <div id="appContainer" class="hidden">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <header class="text-center mb-8 relative">
+                <div class="flex items-center justify-center gap-4">
+                    <!-- SVG Logo -->
+                    <svg class="w-14 h-14 text-amber-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                        <path d="M12 8.5v-2a.5.5 0 0 1 .5-.5h0a.5.5 0 0 1 .5.5v2"></path>
+                        <path d="M12 15.5v-2a.5.5 0 0 1 .5-.5h0a.5.5 0 0 1 .5.5v2"></path>
+                        <path d="M15.5 12h-2a.5.5 0 0 1-.5-.5v0a.5.5 0 0 1 .5-.5h2"></path>
+                        <path d="M8.5 12h-2a.5.5 0 0 1-.5-.5v0a.5.5 0 0 1 .5-.5h2"></path>
+                    </svg>
+                    <h1 class="text-4xl md:text-5xl font-bold text-amber-900 tracking-tight">Smart E-Library</h1>
+                </div>
+                <p class="text-lg text-gray-500 mt-2">Gerbang Pengetahuan di Ujung Jari Anda</p>
+                <div class="absolute top-0 right-0 flex items-center gap-4">
+                    <div id="userMenu" class="flex items-center gap-3"></div>
+                    <div id="notificationBell" class="relative cursor-pointer">
+                        <i data-lucide="bell" class="w-6 h-6 text-gray-600"></i>
+                        <span id="notificationDot" class="hidden absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
+                        <div id="notificationDropdown" class="hidden absolute top-full right-0 mt-2 w-72 bg-white rounded-lg shadow-xl border z-10"></div>
+                    </div>
+                    <div id="sessionInfo" class="text-right"></div>
+                </div>
+            </header>
+
+            <!-- Fitur Berita dan Pengumuman -->
+            <div id="newsContainer" class="hidden mb-8 max-w-4xl mx-auto"></div>
+
+            <!-- Fitur Lanjutkan Membaca -->
+            <div id="continueReading" class="hidden mb-8 max-w-2xl mx-auto"></div>
+
+            <div class="mb-10 max-w-2xl mx-auto flex gap-4 items-center">
+                <div class="relative flex-grow">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i data-lucide="search" class="w-5 h-5 text-gray-400"></i>
+                    </div>
+                    <input type="text" id="searchInput" placeholder="Cari judul, penulis, ISBN..."
+                        class="w-full py-3 pl-12 pr-4 text-gray-700 bg-white border border-gray-200 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 transition">
+                </div>
+            </div>
+            <main id="book-collection" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-8">
+            </main>
+            <div id="no-results" class="hidden text-center py-12">
+                <i data-lucide="folder-search" class="w-16 h-16 mx-auto text-gray-400"></i>
+                <h3 class="mt-4 text-xl font-semibold text-gray-600">Buku tidak ditemukan</h3>
+                <p class="mt-1 text-gray-500">Coba gunakan kata kunci lain.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODALS ===== -->
+    
+    <!-- Modal Detail Buku -->
+    <div id="bookModal" class="fixed inset-0 z-50 items-center justify-center p-4 hidden modal-bg">
+        <div id="modalContent" class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col md:flex-row overflow-hidden transform transition-all duration-300 scale-95 opacity-0"></div>
+    </div>
+    
+    <!-- Modal Admin (Tambah/Edit Buku) -->
+    <div id="adminModal" class="fixed inset-0 z-50 items-center justify-center p-4 hidden modal-bg">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-95 opacity-0">
+            <form id="adminForm" class="p-8 max-h-[90vh] overflow-y-auto">
+                <h2 id="adminModalTitle" class="text-2xl font-bold text-amber-900 mb-6">Tambah Buku Baru</h2>
+                <input type="hidden" id="bookId">
+                <div class="grid grid-cols-1 gap-5">
+                    <div>
+                        <label for="bookTitle" class="block text-sm font-medium text-gray-700">Judul</label>
+                        <input type="text" id="bookTitle" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required>
+                    </div>
+                    <div>
+                        <label for="bookAuthor" class="block text-sm font-medium text-gray-700">Penulis</label>
+                        <input type="text" id="bookAuthor" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required>
+                    </div>
+                    <div>
+                        <label for="bookCover" class="block text-sm font-medium text-gray-700">URL Sampul</label>
+                        <input type="url" id="bookCover" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" placeholder="https://..." required>
+                    </div>
+                     <div>
+                        <label for="bookISBN" class="block text-sm font-medium text-gray-700">ISBN</label>
+                        <input type="text" id="bookISBN" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required>
+                    </div>
+                     <div>
+                        <label for="bookYear" class="block text-sm font-medium text-gray-700">Tahun Terbit</label>
+                        <input type="number" id="bookYear" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required>
+                    </div>
+                     <div>
+                        <label for="bookPublisher" class="block text-sm font-medium text-gray-700">Penerbit</label>
+                        <input type="text" id="bookPublisher" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required>
+                    </div>
+                    <div>
+                        <label for="bookGenre" class="block text-sm font-medium text-gray-700">Genre</label>
+                        <input type="text" id="bookGenre" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" placeholder="Fiksi, Sejarah" required>
+                    </div>
+                     <div>
+                        <label for="bookDesc" class="block text-sm font-medium text-gray-700">Deskripsi</label>
+                        <textarea id="bookDesc" rows="3" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required></textarea>
+                    </div>
+                </div>
+                <div class="mt-8 flex justify-end gap-4">
+                    <button type="button" id="cancelAdminModal" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal Konfirmasi -->
+    <div id="confirmModal" class="fixed inset-0 z-[60] items-center justify-center p-4 hidden modal-bg">
+        <div id="confirmModalContent" class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-8 text-center transform transition-all duration-300 scale-95 opacity-0">
+            <i data-lucide="alert-triangle" class="w-16 h-16 mx-auto text-amber-500"></i>
+            <h3 id="confirmModalText" class="text-lg font-semibold text-gray-800 mt-4">Apakah Anda yakin?</h3>
+            <div class="mt-6 flex justify-center gap-4">
+                <button id="confirmCancelBtn" class="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition">Batal</button>
+                <button id="confirmOkBtn" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">Ya, Hapus</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Permintaan Buku -->
+    <div id="requestModal" class="fixed inset-0 z-50 items-center justify-center p-4 hidden modal-bg">
+         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-95 opacity-0">
+             <form id="requestForm" class="p-8">
+                 <h2 class="text-2xl font-bold text-amber-900 mb-6">Minta Buku Baru</h2>
+                 <div class="grid grid-cols-1 gap-5">
+                    <div>
+                        <label for="requestTitle" class="block text-sm font-medium text-gray-700">Judul Buku</label>
+                        <input type="text" id="requestTitle" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required>
+                    </div>
+                    <div>
+                        <label for="requestAuthor" class="block text-sm font-medium text-gray-700">Penulis</label>
+                        <input type="text" id="requestAuthor" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required>
+                    </div>
+                 </div>
+                 <div class="mt-8 flex justify-end gap-4">
+                    <button type="button" onclick="closeModal(requestModal)" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition">Kirim Permintaan</button>
+                </div>
+             </form>
+         </div>
+    </div>
+    
+    <!-- Modal Dashboard Admin -->
+     <div id="dashboardModal" class="fixed inset-0 z-50 items-center justify-center p-4 hidden modal-bg">
+         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden transform transition-all duration-300 scale-95 opacity-0">
+            <div class="p-6 border-b flex justify-between items-center flex-shrink-0">
+                <h2 class="text-2xl font-bold text-amber-900">Dashboard Admin</h2>
+                <button onclick="closeModal(dashboardModal)"><i data-lucide="x" class="w-6 h-6 text-gray-600"></i></button>
+            </div>
+            <!-- Tabs -->
+            <div class="flex border-b px-6 flex-shrink-0">
+                <button id="requestsTabBtn" class="dashboard-tab py-3 px-4 font-semibold text-sm">Permintaan Buku</button>
+                <button id="usersTabBtn" class="dashboard-tab py-3 px-4 font-semibold text-sm">Pengelola Pengguna</button>
+                <button id="newsTabBtn" class="dashboard-tab py-3 px-4 font-semibold text-sm">Manajemen Berita</button>
+            </div>
+            <div class="flex-grow overflow-y-auto">
+                <!-- Requests View -->
+                <div id="requestsView" class="p-6">
+                    <h3 class="text-xl font-semibold mb-4">Permintaan Buku dari Pengguna</h3>
+                    <div id="requestList" class="space-y-3"></div>
+                </div>
+                <!-- Users View -->
+                <div id="usersView" class="hidden p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-semibold">Daftar Pengguna</h3>
+                        <button onclick="openUserAdminModal()" class="bg-amber-600 text-white text-sm font-semibold py-2 px-4 rounded-lg hover:bg-amber-700 transition flex items-center gap-2">
+                            <i data-lucide="user-plus" class="w-4 h-4"></i> Tambah Pengguna
+                        </button>
+                    </div>
+                    <div id="userList" class="space-y-3"></div>
+                </div>
+                 <!-- News View -->
+                <div id="newsView" class="hidden p-6">
+                     <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-semibold">Daftar Berita & Pengumuman</h3>
+                        <button onclick="openNewsAdminModal()" class="bg-amber-600 text-white text-sm font-semibold py-2 px-4 rounded-lg hover:bg-amber-700 transition flex items-center gap-2">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Tambah Berita
+                        </button>
+                    </div>
+                    <div id="newsManagementList" class="space-y-3"></div>
+                </div>
+            </div>
+         </div>
+    </div>
+
+    <!-- Modal Pengelola Pengguna -->
+    <div id="userAdminModal" class="fixed inset-0 z-[55] items-center justify-center p-4 hidden modal-bg">
+         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-95 opacity-0">
+             <form id="userAdminForm" class="p-8">
+                 <h2 id="userAdminModalTitle" class="text-2xl font-bold text-amber-900 mb-6">Tambah Pengguna</h2>
+                 <input type="hidden" id="originalUsername">
+                 <div class="grid grid-cols-1 gap-5">
+                    <div>
+                        <label for="adminUsername" class="block text-sm font-medium text-gray-700">Username</label>
+                        <input type="text" id="adminUsername" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required>
+                    </div>
+                    <div>
+                        <label for="adminPassword" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="text" id="adminPassword" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500">
+                         <p id="passwordHint" class="text-xs text-gray-500 mt-1"></p>
+                    </div>
+                 </div>
+                 <div class="mt-8 flex justify-end gap-4">
+                    <button type="button" onclick="closeModal(userAdminModal)" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition">Simpan</button>
+                </div>
+             </form>
+         </div>
+    </div>
+    
+    <!-- Modal Admin Berita -->
+    <div id="newsAdminModal" class="fixed inset-0 z-[55] items-center justify-center p-4 hidden modal-bg">
+         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-95 opacity-0">
+             <form id="newsAdminForm" class="p-8">
+                 <h2 id="newsAdminModalTitle" class="text-2xl font-bold text-amber-900 mb-6">Tambah Berita Baru</h2>
+                 <input type="hidden" id="newsId">
+                 <div class="grid grid-cols-1 gap-5">
+                    <div>
+                        <label for="newsTitle" class="block text-sm font-medium text-gray-700">Judul</label>
+                        <input type="text" id="newsTitle" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required>
+                    </div>
+                    <div>
+                        <label for="newsContent" class="block text-sm font-medium text-gray-700">Isi Berita</label>
+                        <textarea id="newsContent" rows="5" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required></textarea>
+                    </div>
+                 </div>
+                 <div class="mt-8 flex justify-end gap-4">
+                    <button type="button" onclick="closeModal(newsAdminModal)" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition">Simpan</button>
+                </div>
+             </form>
+         </div>
+    </div>
+    
+    <!-- Modal Lihat Semua Berita -->
+    <div id="newsModal" class="fixed inset-0 z-50 items-center justify-center p-4 hidden modal-bg">
+         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden transform transition-all duration-300 scale-95 opacity-0">
+             <div class="p-6 border-b flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-amber-900">Berita & Pengumuman</h2>
+                <button onclick="closeModal(newsModal)"><i data-lucide="x" class="w-6 h-6 text-gray-600"></i></button>
+             </div>
+             <div id="allNewsList" class="p-6 overflow-y-auto space-y-6"></div>
+         </div>
+    </div>
+
+
+    <!-- Modal Teman Baca -->
+    <div id="friendsModal" class="fixed inset-0 z-50 items-center justify-center p-4 hidden modal-bg">
+         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden transform transition-all duration-300 scale-95 opacity-0">
+             <div class="p-6 border-b flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-amber-900">Teman Baca</h2>
+                <button onclick="closeModal(friendsModal)"><i data-lucide="x" class="w-6 h-6 text-gray-600"></i></button>
+             </div>
+             <div id="friendsList" class="p-6 overflow-y-auto"></div>
+         </div>
+    </div>
+
+    <!-- Modal Donasi -->
+    <div id="donationModal" class="fixed inset-0 z-50 items-center justify-center p-4 hidden modal-bg">
+         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm text-center p-8 transform transition-all duration-300 scale-95 opacity-0">
+             <form id="donationForm">
+                <i data-lucide="gift" class="w-16 h-16 mx-auto text-amber-500"></i>
+                <h2 class="text-2xl font-bold text-amber-900 mt-4 mb-2">Dukung Smart E-Library</h2>
+                <p class="text-gray-600 mb-6">Donasi Anda membantu kami menambah koleksi buku baru.</p>
+                <div>
+                    <label for="donationAmount" class="block text-sm font-medium text-gray-700 mb-2">Jumlah Donasi (IDR)</label>
+                    <input type="number" id="donationAmount" class="text-center w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required min="1000" step="1000" placeholder="Contoh: 50000">
+                </div>
+                 <div class="mt-8 flex justify-center gap-4">
+                    <button type="button" onclick="closeModal(donationModal)" class="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition">Batal</button>
+                    <button type="submit" class="px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition">Donasi Sekarang</button>
+                </div>
+             </form>
+         </div>
+    </div>
+
+    <!-- Modal Riwayat Donasi -->
+    <div id="donationHistoryModal" class="fixed inset-0 z-50 items-center justify-center p-4 hidden modal-bg">
+         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden transform transition-all duration-300 scale-95 opacity-0">
+             <div class="p-6 border-b flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-amber-900">Riwayat Donasi Anda</h2>
+                <button onclick="closeModal(donationHistoryModal)"><i data-lucide="x" class="w-6 h-6 text-gray-600"></i></button>
+             </div>
+             <div id="donationHistoryList" class="p-6 overflow-y-auto"></div>
+         </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-gray-900 text-white py-2 px-5 rounded-lg shadow-lg opacity-0 z-[70]">
+        <p id="toastMessage"></p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- DATA BUKU (DEFAULT) ---
+            const defaultBooks = [
+                { id: 1, isbn: "9789791227757", title: "Laskar Pelangi", author: "Andrea Hirata", year: 2005, publisher: "Bentang Pustaka", cover: "https://cdn.gramedia.com/uploads/items/9786230800041_Laskar_Pelangi.jpg", description: "Sebuah novel inspiratif tentang persahabatan dan perjuangan 10 anak di Belitung untuk terus bersekolah.", genre: "Fiksi, Inspiratif", status: "available", rating: 4.8, totalRatings: 1250, wishlistedBy: [], reviews: [{username: 'siti', rating: 5, text: 'Buku yang sangat menginspirasi!'}] },
+                { id: 2, isbn: "9789799731234", title: "Bumi Manusia", author: "Pramoedya Ananta Toer", year: 1980, publisher: "Hasta Mitra", cover: "https://cdn.gramedia.com/uploads/items/bumi-manusia.jpg", description: "Kisah Minke di era kolonial Hindia Belanda, mengeksplorasi tema nasionalisme, cinta, dan perlawanan.", genre: "Sejarah, Fiksi", status: "borrowed", borrowedBy: "joko", rating: 4.9, totalRatings: 980, wishlistedBy: ['siti'], reviews: [{username: 'joko', rating: 5, text: 'Karya sastra terbaik Indonesia.'}] },
+                { id: 3, isbn: "9786024122619", title: "Filosofi Teras", author: "Henry Manampiring", year: 2018, publisher: "Kompas Gramedia", cover: "https://cdn.gramedia.com/uploads/items/filosofi_teras_c-1_revisi_final.jpg", description: "Pengantar filsafat Stoisisme kuno yang relevan untuk kehidupan modern, membantu mengatasi emosi negatif.", genre: "Self-Help, Filsafat", status: "available", rating: 4.7, totalRatings: 1120, wishlistedBy: [], reviews: [] },
+                { id: 4, isbn: "9786024244588", title: "Sapiens: Riwayat Singkat Umat Manusia", author: "Yuval Noah Harari", year: 2011, publisher: "KPG", cover: "https://cdn.gramedia.com/uploads/items/sapiens-riwayat-singkat-umat-manusia.jpg", description: "Sebuah penelusuran sejarah umat manusia dari Zaman Batu hingga Abad ke-21.", genre: "Sains, Sejarah", status: "available", rating: 4.9, totalRatings: 1500, wishlistedBy: [], reviews: [] },
+                { id: 5, isbn: "9789792212748", title: "Cantik Itu Luka", author: "Eka Kurniawan", year: 2002, publisher: "Gramedia Pustaka Utama", cover: "https://cdn.gramedia.com/uploads/items/cantik_itu_luka_cov_baru.jpg", description: "Dengan gaya realisme magis, novel ini menceritakan sejarah Indonesia melalui kisah tragis sebuah keluarga.", genre: "Fiksi, Sastra", status: "borrowed", borrowedBy: "siti", rating: 4.6, totalRatings: 850, wishlistedBy: [], reviews: [] },
+                { id: 6, isbn: "9786022081514", title: "Garis Waktu", author: "Fiersa Besari", year: 2016, publisher: "Media Kita", cover: "https://cdn.gramedia.com/uploads/items/9786022081514_garis_waktu.jpg", description: "Kumpulan tulisan yang merangkum perjalanan perasaan, mulai dari perkenalan hingga patah hati.", genre: "Romansa, Prosa", status: "available", rating: 4.5, totalRatings: 930, wishlistedBy: [], reviews: [] },
+                { id: 7, isbn: "9786020626388", title: "Atomic Habits", author: "James Clear", year: 2018, publisher: "Gramedia Pustaka Utama", cover: "https://cdn.gramedia.com/uploads/items/atomic_habits_perubahan_kecil_yang_memberikan_hasil_luar_biasa.jpg", description: "Panduan praktis untuk membangun kebiasaan baik dan menghilangkan kebiasaan buruk melalui perubahan-perubahan kecil.", genre: "Self-Help, Produktivitas", status: "available", rating: 4.8, totalRatings: 2100, wishlistedBy: [], reviews: [] },
+                { id: 8, isbn: "9789792248518", title: "Negeri 5 Menara", author: "Ahmad Fuadi", year: 2009, publisher: "Gramedia Pustaka Utama", cover: "https://cdn.gramedia.com/uploads/items/negeri_5_menara_edisi_baru.jpg", description: "Kisah inspiratif tentang enam santri dari berbagai daerah yang berjuang menuntut ilmu di Pondok Madani.", genre: "Inspiratif, Fiksi", status: "available", rating: 4.7, totalRatings: 1300, wishlistedBy: [], reviews: [] },
+                { id: 9, isbn: "9789791227740", title: "Perahu Kertas", author: "Dee Lestari", year: 2009, publisher: "Bentang Pustaka", cover: "https://cdn.gramedia.com/uploads/items/perahu-kertas.jpg", description: "Kisah cinta yang unik antara Keenan, seorang pelukis, dan Kugy, seorang penulis dongeng.", genre: "Romansa, Fiksi", status: "available", rating: 4.6, totalRatings: 1050, wishlistedBy: [], reviews: [] },
+                { id: 10, isbn: "9786020822129", title: "Pulang", author: "Tere Liye", year: 2015, publisher: "Republika Penerbit", cover: "https://cdn.gramedia.com/uploads/items/pulang-tere-liye-cover-baru.jpg", description: "Novel aksi yang menceritakan perjalanan seorang tukang pukul dari keluarga bayangan penguasa ekonomi hitam.", genre: "Aksi, Fiksi", status: "available", rating: 4.8, totalRatings: 1400, wishlistedBy: [], reviews: [] },
+                { id: 11, isbn: "9786237284569", title: "The Psychology of Money", author: "Morgan Housel", year: 2020, publisher: "Baca", cover: "https://cdn.gramedia.com/uploads/items/the_psychology_of_money.jpg", description: "Pelajaran abadi tentang kekayaan, keserakahan, dan kebahagiaan melalui 19 cerita pendek.", genre: "Keuangan, Self-Help", status: "available", rating: 4.7, totalRatings: 1800, wishlistedBy: [], reviews: [] },
+                { id: 12, isbn: "9786024526981", title: "Sebuah Seni untuk Bersikap Bodo Amat", author: "Mark Manson", year: 2016, publisher: "Grasindo", cover: "https://cdn.gramedia.com/uploads/items/sebuah-seni-untuk-bersikap-bodo-amat.jpg", description: "Pendekatan generasi baru untuk buku self-help, yang menunjukkan cara untuk berhenti mencoba menjadi positif sepanjang waktu.", genre: "Self-Help, Psikologi", status: "available", rating: 4.5, totalRatings: 2500, wishlistedBy: [], reviews: [] },
+            ];
+            
+            // --- VARIABEL GLOBAL & STATE ---
+            let books = [];
+            let users = [];
+            let notifications = [];
+            let bookRequests = [];
+            let donations = [];
+            let news = [];
+            let lastRead = {};
+            let quotes = {};
+            let currentSession = null;
+            
+            // --- INISIALISASI DATA ---
+            const initData = () => {
+                const storedBooks = localStorage.getItem('ePerpusBooks');
+                books = storedBooks ? JSON.parse(storedBooks) : defaultBooks;
+
+                const defaultUsers = [
+                    { username: 'joko', password: 'joko123', role: 'user', friends: ['siti'] },
+                    { username: 'siti', password: 'siti123', role: 'user', friends: ['joko'] },
+                ];
+                const storedUsers = localStorage.getItem('ePerpusUsers');
+                users = storedUsers ? JSON.parse(storedUsers) : defaultUsers;
+
+                const defaultNews = [
+                    { id: 1, title: "Selamat Datang di Smart E-Library!", content: "Versi terbaru dari perpustakaan digital kita telah hadir dengan berbagai fitur menarik. Jelajahi koleksi kami dan nikmati kemudahan membaca di ujung jari Anda.", timestamp: Date.now() }
+                ];
+
+                notifications = JSON.parse(localStorage.getItem('ePerpusNotifications')) || [];
+                bookRequests = JSON.parse(localStorage.getItem('ePerpusBookRequests')) || [];
+                donations = JSON.parse(localStorage.getItem('ePerpusDonations')) || [];
+                news = JSON.parse(localStorage.getItem('ePerpusNews')) || defaultNews;
+                lastRead = JSON.parse(localStorage.getItem('ePerpusLastRead')) || {};
+                quotes = JSON.parse(localStorage.getItem('ePerpusQuotes')) || {};
+                saveAllStates();
+            };
+            
+            // --- FUNGSI PENYIMPANAN STATE ---
+            const saveBooksState = () => localStorage.setItem('ePerpusBooks', JSON.stringify(books));
+            const saveUsersState = () => localStorage.setItem('ePerpusUsers', JSON.stringify(users));
+            const saveNotificationsState = () => localStorage.setItem('ePerpusNotifications', JSON.stringify(notifications));
+            const saveBookRequestsState = () => localStorage.setItem('ePerpusBookRequests', JSON.stringify(bookRequests));
+            const saveDonationsState = () => localStorage.setItem('ePerpusDonations', JSON.stringify(donations));
+            const saveNewsState = () => localStorage.setItem('ePerpusNews', JSON.stringify(news));
+            const saveLastReadState = () => localStorage.setItem('ePerpusLastRead', JSON.stringify(lastRead));
+            const saveQuotesState = () => localStorage.setItem('ePerpusQuotes', JSON.stringify(quotes));
+
+            const saveAllStates = () => {
+                saveBooksState();
+                saveUsersState();
+                saveNotificationsState();
+                saveBookRequestsState();
+                saveDonationsState();
+                saveNewsState();
+                saveLastReadState();
+                saveQuotesState();
+            };
+
+            // --- BAGIAN AUTENTIKASI ---
+            const authContainer = document.getElementById('authContainer');
+            const appContainer = document.getElementById('appContainer');
+            const loginForm = document.getElementById('loginForm');
+            const loginError = document.getElementById('loginError');
+            
+            const showMessage = (element, message) => {
+                element.textContent = message;
+                element.classList.remove('hidden');
+            };
+            const hideMessage = (element) => {
+                 element.classList.add('hidden');
+                 element.textContent = '';
+            }
+
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                hideMessage(loginError);
+                const username = document.getElementById('loginUsername').value;
+                const password = document.getElementById('loginPassword').value;
+                let session = null;
+                if (username === 'admin123' && password === 'admin123') {
+                    session = { username: 'admin', role: 'admin' };
+                } else {
+                    const foundUser = users.find(user => user.username === username && user.password === password);
+                    if (foundUser) {
+                        session = { username: foundUser.username, role: 'user' };
+                    }
+                }
+                if (session) {
+                    sessionStorage.setItem('ePerpusSession', JSON.stringify(session));
+                    startApp(session);
+                } else {
+                    showMessage(loginError, 'Username atau password salah.');
+                }
+            });
+
+            // --- BAGIAN APLIKASI UTAMA ---
+            const bookCollection = document.getElementById('book-collection');
+            const searchInput = document.getElementById('searchInput');
+            const bookModal = document.getElementById('bookModal');
+            const modalContent = document.getElementById('modalContent');
+            const noResultsDiv = document.getElementById('no-results');
+            const sessionInfoDiv = document.getElementById('sessionInfo');
+            const userMenuDiv = document.getElementById('userMenu');
+            const adminModal = document.getElementById('adminModal');
+            const adminForm = document.getElementById('adminForm');
+            const cancelAdminModal = document.getElementById('cancelAdminModal');
+            const confirmModal = document.getElementById('confirmModal');
+            const notificationBell = document.getElementById('notificationBell');
+            const notificationDropdown = document.getElementById('notificationDropdown');
+            const notificationDot = document.getElementById('notificationDot');
+            const requestModal = document.getElementById('requestModal');
+            const requestForm = document.getElementById('requestForm');
+            const dashboardModal = document.getElementById('dashboardModal');
+            const userAdminModal = document.getElementById('userAdminModal');
+            const userAdminForm = document.getElementById('userAdminForm');
+            const friendsModal = document.getElementById('friendsModal');
+            const donationModal = document.getElementById('donationModal');
+            const donationForm = document.getElementById('donationForm');
+            const donationHistoryModal = document.getElementById('donationHistoryModal');
+            const continueReadingDiv = document.getElementById('continueReading');
+            const newsContainer = document.getElementById('newsContainer');
+            const newsAdminModal = document.getElementById('newsAdminModal');
+            const newsAdminForm = document.getElementById('newsAdminForm');
+            const newsModal = document.getElementById('newsModal');
+            
+            const startApp = (session) => {
+                currentSession = session;
+                document.body.classList.add('app-background');
+                authContainer.classList.add('hidden');
+                appContainer.classList.remove('hidden');
+                
+                sessionInfoDiv.innerHTML = `<p class="font-semibold">${session.username}</p><p class="text-sm text-gray-500 capitalize">${session.role}</p><button id="logoutBtn" class="text-sm text-amber-600 hover:underline">Logout</button>`;
+                document.getElementById('logoutBtn').addEventListener('click', () => {
+                    sessionStorage.removeItem('ePerpusSession');
+                    document.body.classList.remove('app-background');
+                    window.location.reload();
+                });
+                
+                renderUserMenu();
+                renderNews();
+                renderContinueReading();
+                renderBooks(books);
+                renderNotifications();
+                lucide.createIcons();
+            };
+
+            const renderUserMenu = () => {
+                userMenuDiv.innerHTML = '';
+                if (currentSession.role === 'admin') {
+                    userMenuDiv.innerHTML = `
+                        <button onclick="openAdminModal()" class="bg-amber-600 text-white p-2 rounded-full hover:bg-amber-700 transition shadow-sm" title="Tambah Buku"><i data-lucide="plus"></i></button>
+                        <button onclick="openAdminDashboard()" class="bg-gray-600 text-white p-2 rounded-full hover:bg-gray-700 transition shadow-sm" title="Dashboard Admin"><i data-lucide="layout-dashboard"></i></button>
+                    `;
+                } else {
+                    userMenuDiv.innerHTML = `
+                        <button onclick="openRequestModal()" class="bg-teal-600 text-white p-2 rounded-full hover:bg-teal-700 transition shadow-sm" title="Minta Buku"><i data-lucide="book-plus"></i></button>
+                        <button onclick="openFriendsModal()" class="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700 transition shadow-sm" title="Teman Baca"><i data-lucide="users"></i></button>
+                        <button onclick="openDonationModal()" class="bg-pink-600 text-white p-2 rounded-full hover:bg-pink-700 transition shadow-sm" title="Donasi"><i data-lucide="gift"></i></button>
+                        <button onclick="openDonationHistoryModal()" class="bg-purple-600 text-white p-2 rounded-full hover:bg-purple-700 transition shadow-sm" title="Riwayat Donasi"><i data-lucide="history"></i></button>
+                    `;
+                }
+                lucide.createIcons();
+            };
+
+            const renderNews = () => {
+                if (news.length > 0) {
+                    const latestNews = [...news].sort((a, b) => b.timestamp - a.timestamp)[0];
+                    newsContainer.innerHTML = `
+                        <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-800 p-4 rounded-r-lg shadow-md flex items-center justify-between">
+                            <div class="flex items-center flex-1 min-w-0">
+                                <i data-lucide="megaphone" class="w-8 h-8 mr-4 flex-shrink-0"></i>
+                                <div class="min-w-0">
+                                    <p class="font-bold truncate">${latestNews.title}</p>
+                                    <p class="text-sm truncate">${latestNews.content}</p>
+                                </div>
+                            </div>
+                            <button onclick="openNewsModal()" class="bg-blue-600 text-white font-semibold py-1 px-4 rounded-lg hover:bg-blue-700 transition text-sm ml-4 flex-shrink-0">Lihat Semua</button>
+                        </div>
+                    `;
+                    newsContainer.classList.remove('hidden');
+                    lucide.createIcons();
+                } else {
+                    newsContainer.classList.add('hidden');
+                }
+            };
+            
+            const renderContinueReading = () => {
+                const lastReadBookId = lastRead[currentSession.username];
+                if (lastReadBookId) {
+                    const book = books.find(b => b.id === lastReadBookId);
+                    if (book) {
+                        continueReadingDiv.innerHTML = `
+                             <div class="bg-amber-100 border-l-4 border-amber-500 text-amber-700 p-4 rounded-r-lg shadow-md flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <i data-lucide="book-open" class="w-6 h-6 mr-3"></i>
+                                    <div>
+                                        <p class="font-bold">Lanjutkan Membaca</p>
+                                        <p class="text-sm">${book.title}</p>
+                                    </div>
+                                </div>
+                                <button onclick="openBookModal(${book.id})" class="bg-amber-600 text-white font-semibold py-1 px-4 rounded-lg hover:bg-amber-700 transition text-sm">Buka</button>
+                            </div>
+                        `;
+                        continueReadingDiv.classList.remove('hidden');
+                        lucide.createIcons();
+                    }
+                } else {
+                    continueReadingDiv.classList.add('hidden');
+                }
+            };
+            
+            // --- Fungsi Toast ---
+            const showToast = (message) => {
+                const toast = document.getElementById('toast');
+                const toastMessage = document.getElementById('toastMessage');
+                toastMessage.textContent = message;
+                toast.classList.remove('opacity-0');
+                toast.classList.add('toast');
+                setTimeout(() => {
+                    toast.classList.add('opacity-0');
+                    toast.classList.remove('toast');
+                }, 3000);
+            }
+
+            const renderBooks = (booksToRender) => {
+                 bookCollection.innerHTML = '';
+                 noResultsDiv.classList.toggle('hidden', booksToRender.length > 0);
+                 
+                booksToRender.forEach(book => {
+                    const statusClass = book.status === 'available' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800';
+                    const bookCard = `
+                        <div class="book-card bg-white rounded-lg shadow-md overflow-hidden cursor-pointer group flex flex-col" onclick="openBookModal(${book.id})">
+                            <img src="${book.cover}" alt="Sampul ${book.title}" class="w-full h-56 object-cover" onerror="this.src='https://placehold.co/400x600/e2e8f0/475569?text=Gambar+Tidak+Ditemukan'">
+                            <div class="p-4 flex flex-col flex-grow">
+                                <h3 class="font-bold text-md text-gray-800 group-hover:text-amber-700 truncate">${book.title}</h3>
+                                <p class="text-sm text-gray-500 mb-2">${book.author}</p>
+                                <div class="mt-auto flex justify-between items-center pt-2">
+                                     <span class="text-xs font-semibold px-2 py-1 ${statusClass} rounded-full">${book.status === 'available' ? 'Tersedia' : 'Dipinjam'}</span>
+                                     <div class="flex items-center gap-1 text-sm text-amber-500">
+                                         <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                         <span>${book.rating.toFixed(1)}</span>
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    bookCollection.insertAdjacentHTML('beforeend', bookCard);
+                });
+                lucide.createIcons();
+            };
+
+            // --- FUNGSI MODAL ---
+            const openModal = (modalElement) => {
+                modalElement.classList.remove('hidden');
+                modalElement.classList.add('flex');
+                setTimeout(() => {
+                    const content = modalElement.children[0];
+                    if(content) content.classList.remove('scale-95', 'opacity-0');
+                }, 10);
+                document.body.style.overflow = 'hidden';
+            };
+
+            const closeModal = (modalElement) => {
+                const content = modalElement.children[0];
+                if (content) content.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    modalElement.classList.add('hidden');
+                    modalElement.classList.remove('flex');
+                    document.body.style.overflow = '';
+                }, 300);
+            };
+            
+            window.openBookModal = (bookId) => {
+                const book = books.find(b => b.id === bookId);
+                if (!book) return;
+
+                // Fitur 1: Penanda Halaman Otomatis
+                lastRead[currentSession.username] = bookId;
+                saveLastReadState();
+                renderContinueReading();
+
+                let actionButton = '';
+                if (currentSession.role === 'user') {
+                    if (book.status === 'available') {
+                        actionButton = `<button onclick="borrowBook(${book.id})" class="w-full sm:w-auto flex-1 bg-amber-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-amber-700 transition flex items-center justify-center gap-2"><i data-lucide="book-down" class="w-5 h-5"></i> Pinjam Buku</button>`;
+                    } else if (book.borrowedBy === currentSession.username) {
+                        actionButton = `<button onclick="returnBook(${book.id})" class="w-full sm:w-auto flex-1 bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition flex items-center justify-center gap-2"><i data-lucide="book-up" class="w-5 h-5"></i> Kembalikan Buku</button>`;
+                    } else {
+                        const isWishlisted = book.wishlistedBy?.includes(currentSession.username);
+                        actionButton = isWishlisted 
+                            ? `<button onclick="toggleWishlist(${book.id})" class="w-full sm:w-auto flex-1 bg-gray-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-600 transition flex items-center justify-center gap-2"><i data-lucide="list-x" class="w-5 h-5"></i> Hapus dari Daftar Tunggu</button>`
+                            : `<button onclick="toggleWishlist(${book.id})" class="w-full sm:w-auto flex-1 bg-teal-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-teal-700 transition flex items-center justify-center gap-2"><i data-lucide="list-plus" class="w-5 h-5"></i> Tambah ke Daftar Tunggu</button>`;
+                    }
+                }
+                
+                let adminButtons = '';
+                if (currentSession.role === 'admin') {
+                     adminButtons = `
+                        <button onclick="openAdminModal(${book.id})" class="p-2 rounded-full hover:bg-gray-200 transition"><i data-lucide="edit" class="w-5 h-5 text-gray-600"></i></button>
+                        <button onclick="deleteBook(${book.id})" class="p-2 rounded-full hover:bg-gray-200 transition"><i data-lucide="trash-2" class="w-5 h-5 text-red-600"></i></button>
+                    `;
+                }
+                
+                // Fitur 2: Penyimpanan dan Berbagi Kutipan
+                const quotesHTML = `
+                    <div class="mt-6 border-t pt-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Kutipan Favorit</h3>
+                        <div id="quotesList" class="space-y-4 mb-6 max-h-48 overflow-y-auto pr-2"></div>
+                        <div>
+                            <textarea id="newQuoteText" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" rows="3" placeholder="Simpan kutipan favorit dari buku ini..."></textarea>
+                            <button onclick="saveQuote(${book.id})" class="mt-2 w-full sm:w-auto bg-amber-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-amber-600 transition">Simpan Kutipan</button>
+                        </div>
+                    </div>
+                `;
+
+                modalContent.innerHTML = `
+                    <div class="w-full md:w-1/3 flex-shrink-0 bg-gray-100 flex items-center justify-center">
+                         <img src="${book.cover}" alt="Sampul ${book.title}" class="w-full h-full object-contain md:object-cover" onerror="this.src='https://placehold.co/400x600/e2e8f0/475569?text=Image+Not+Found'">
+                    </div>
+                    <div class="p-6 md:p-8 flex flex-col flex-grow overflow-y-auto">
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-start">
+                                <span class="text-sm font-semibold mb-2 inline-block py-1 px-3 leading-none text-center whitespace-nowrap align-baseline rounded-full bg-amber-100 text-amber-800">${book.genre}</span>
+                                <div class="flex items-center gap-2">${adminButtons}</div>
+                            </div>
+                            <h2 class="text-3xl font-bold text-gray-900 mt-1">${book.title}</h2>
+                            <p class="text-lg text-gray-500 mb-4">oleh ${book.author}</p>
+                             <p class="text-sm text-gray-500 mb-4">ISBN: ${book.isbn}</p>
+                            <div class="flex items-center gap-2 mb-4 text-amber-500">
+                                <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                                <span class="font-bold text-lg">${book.rating.toFixed(1)}</span>
+                                <span class="text-gray-400 text-sm">(${book.totalRatings} ratings)</span>
+                            </div>
+                            <p class="text-gray-700 leading-relaxed">${book.description}</p>
+                            ${currentSession.role === 'user' ? quotesHTML : ''}
+                        </div>
+                        <div class="mt-8 flex flex-col sm:flex-row gap-3">
+                            ${actionButton}
+                            <button onclick="closeModal(bookModal)" class="w-full sm:w-auto bg-gray-200 text-gray-800 font-bold py-3 px-6 rounded-lg hover:bg-gray-300 transition">Tutup</button>
+                        </div>
+                    </div>
+                `;
+                openModal(bookModal);
+                if (currentSession.role === 'user') renderQuotes(bookId);
+                lucide.createIcons();
+            };
+
+            // --- FUNGSI BARU ---
+            const renderQuotes = (bookId) => {
+                const quotesListDiv = document.getElementById('quotesList');
+                const bookQuotes = quotes[bookId]?.[currentSession.username] || [];
+                if (bookQuotes.length > 0) {
+                    quotesListDiv.innerHTML = bookQuotes.map(quote => `
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <p class="text-gray-600 italic">"${quote.text}"</p>
+                            <div class="text-right mt-2 flex gap-2 justify-end">
+                                <button onclick="shareQuote('${btoa(encodeURIComponent(quote.text))}', '${btoa(encodeURIComponent(books.find(b=>b.id===bookId).title))}')" class="p-1 text-blue-500 hover:text-blue-700"><i data-lucide="share-2" class="w-4 h-4"></i></button>
+                                <button onclick="deleteQuote(${bookId}, '${quote.id}')" class="p-1 text-red-500 hover:text-red-700"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    quotesListDiv.innerHTML = `<p class="text-sm text-gray-500">Anda belum menyimpan kutipan dari buku ini.</p>`;
+                }
+                lucide.createIcons();
+            };
+            
+            window.saveQuote = (bookId) => {
+                const quoteText = document.getElementById('newQuoteText').value.trim();
+                if (!quoteText) {
+                    showToast("Kutipan tidak boleh kosong.");
+                    return;
+                }
+                if (!quotes[bookId]) quotes[bookId] = {};
+                if (!quotes[bookId][currentSession.username]) quotes[bookId][currentSession.username] = [];
+                
+                const newQuote = {
+                    id: 'q_' + Date.now(),
+                    text: quoteText
+                };
+                quotes[bookId][currentSession.username].push(newQuote);
+                saveQuotesState();
+                renderQuotes(bookId);
+                document.getElementById('newQuoteText').value = '';
+                showToast("Kutipan berhasil disimpan!");
+            };
+
+            window.deleteQuote = (bookId, quoteId) => {
+                const userQuotes = quotes[bookId]?.[currentSession.username] || [];
+                const quoteIndex = userQuotes.findIndex(q => q.id === quoteId);
+                if (quoteIndex > -1) {
+                    userQuotes.splice(quoteIndex, 1);
+                    saveQuotesState();
+                    renderQuotes(bookId);
+                    showToast("Kutipan dihapus.");
+                }
+            };
+            
+            window.shareQuote = (encodedQuote, encodedTitle) => {
+                try {
+                    const quoteText = decodeURIComponent(atob(encodedQuote));
+                    const bookTitle = decodeURIComponent(atob(encodedTitle));
+                    const shareData = {
+                        title: `Kutipan dari buku "${bookTitle}"`,
+                        text: `"${quoteText}"\n\n- Dari buku "${bookTitle}" di Smart E-Library.`,
+                        url: window.location.href
+                    };
+
+                    if (navigator.share) {
+                        navigator.share(shareData)
+                            .then(() => showToast("Kutipan dibagikan!"))
+                            .catch((err) => console.log('Error sharing:', err));
+                    } else {
+                        // Fallback for browsers that don't support Web Share API
+                        navigator.clipboard.writeText(shareData.text);
+                        showToast("Kutipan disalin ke clipboard!");
+                    }
+                } catch (e) {
+                    console.error("Error decoding or sharing quote:", e);
+                    showToast("Gagal membagikan kutipan.");
+                }
+            };
+
+            window.toggleWishlist = (bookId) => {
+                const bookIndex = books.findIndex(b => b.id === bookId);
+                if (bookIndex === -1) return;
+                const username = currentSession.username;
+                if (!books[bookIndex].wishlistedBy) books[bookIndex].wishlistedBy = [];
+                const wishlistIndex = books[bookIndex].wishlistedBy.indexOf(username);
+                if (wishlistIndex > -1) {
+                    books[bookIndex].wishlistedBy.splice(wishlistIndex, 1);
+                    showToast("Dihapus dari daftar tunggu.");
+                } else {
+                    books[bookIndex].wishlistedBy.push(username);
+                    showToast("Ditambahkan ke daftar tunggu.");
+                }
+                saveBooksState();
+                openBookModal(bookId);
+            };
+
+            const renderNotifications = () => {
+                const userNotifications = notifications.filter(n => n.userId === currentSession.username).sort((a,b) => b.timestamp - a.timestamp);
+                const unreadCount = userNotifications.filter(n => !n.read).length;
+                notificationDot.classList.toggle('hidden', unreadCount === 0);
+                if(userNotifications.length > 0) {
+                    notificationDropdown.innerHTML = `<div class="p-3 font-semibold border-b text-sm">Notifikasi</div>
+                        <div class="max-h-80 overflow-y-auto">
+                            ${userNotifications.map(n => `<div onclick="openNotification(${n.id})" class="p-3 border-b hover:bg-gray-50 cursor-pointer ${n.read ? 'text-gray-500' : 'bg-amber-50'}">
+                                    <p class="text-sm">${n.message}</p>
+                                    <p class="text-xs text-gray-400 mt-1">${new Date(n.timestamp).toLocaleString()}</p>
+                                </div>`).join('')}
+                        </div>`;
+                } else {
+                     notificationDropdown.innerHTML = `<div class="p-4 text-center text-sm text-gray-500">Tidak ada notifikasi.</div>`;
+                }
+            };
+            
+            window.openNotification = (notifId) => {
+                 const notifIndex = notifications.findIndex(n => n.id === notifId);
+                 if (notifIndex > -1) {
+                     const bookId = notifications[notifIndex].bookId;
+                     notifications[notifIndex].read = true;
+                     saveNotificationsState();
+                     renderNotifications();
+                     openBookModal(bookId);
+                     notificationDropdown.classList.add('hidden');
+                 }
+            };
+
+            window.openRequestModal = () => openModal(requestModal);
+
+            const renderBookRequests = () => {
+                const requestList = document.getElementById('requestList');
+                 requestList.innerHTML = bookRequests.length > 0 ? bookRequests.map(req => `
+                    <div class="bg-gray-50 p-3 rounded-lg flex justify-between items-center">
+                        <div>
+                            <p class="font-semibold">${req.title} <span class="font-normal text-gray-600">oleh ${req.author}</span></p>
+                            <p class="text-sm text-gray-500">Diminta oleh: ${req.requestedBy}</p>
+                        </div>
+                        <div class="flex gap-2">
+                             <button onclick="fulfillRequest('${req.id}')" class="bg-green-500 text-white text-xs font-bold py-1 px-3 rounded-full hover:bg-green-600">Penuhi</button>
+                             <button onclick="rejectRequest('${req.id}')" class="bg-red-500 text-white text-xs font-bold py-1 px-3 rounded-full hover:bg-red-600">Tolak</button>
+                        </div>
+                    </div>
+                `).join('') : '<p class="text-gray-500">Tidak ada permintaan buku saat ini.</p>';
+            };
+
+            const renderUserManagement = () => {
+                const userListDiv = document.getElementById('userList');
+                const regularUsers = users.filter(u => u.role === 'user');
+                userListDiv.innerHTML = regularUsers.length > 0 ? regularUsers.map(user => `
+                     <div class="bg-gray-50 p-3 rounded-lg flex justify-between items-center">
+                        <div>
+                            <p class="font-semibold">${user.username}</p>
+                        </div>
+                        <div class="flex gap-2">
+                             <button onclick="openUserAdminModal('${user.username}')" class="bg-blue-500 text-white text-xs font-bold py-1 px-3 rounded-full hover:bg-blue-600">Edit</button>
+                             <button onclick="deleteUser('${user.username}')" class="bg-red-500 text-white text-xs font-bold py-1 px-3 rounded-full hover:bg-red-600">Hapus</button>
+                        </div>
+                    </div>
+                `).join('') : '<p class="text-gray-500">Tidak ada pengguna yang terdaftar.</p>';
+                lucide.createIcons();
+            };
+
+            const renderNewsManagement = () => {
+                const newsListDiv = document.getElementById('newsManagementList');
+                const sortedNews = [...news].sort((a, b) => b.timestamp - a.timestamp);
+                newsListDiv.innerHTML = sortedNews.length > 0 ? sortedNews.map(item => `
+                     <div class="bg-gray-50 p-3 rounded-lg flex justify-between items-center">
+                        <div class="min-w-0">
+                            <p class="font-semibold truncate">${item.title}</p>
+                            <p class="text-xs text-gray-500">${new Date(item.timestamp).toLocaleString()}</p>
+                        </div>
+                        <div class="flex gap-2 flex-shrink-0">
+                             <button onclick="openNewsAdminModal(${item.id})" class="bg-blue-500 text-white text-xs font-bold py-1 px-3 rounded-full hover:bg-blue-600">Edit</button>
+                             <button onclick="deleteNews(${item.id})" class="bg-red-500 text-white text-xs font-bold py-1 px-3 rounded-full hover:bg-red-600">Hapus</button>
+                        </div>
+                    </div>
+                `).join('') : '<p class="text-gray-500">Belum ada berita atau pengumuman.</p>';
+            };
+
+            window.openAdminDashboard = () => {
+                const requestsTabBtn = document.getElementById('requestsTabBtn');
+                const usersTabBtn = document.getElementById('usersTabBtn');
+                const newsTabBtn = document.getElementById('newsTabBtn');
+                const requestsView = document.getElementById('requestsView');
+                const usersView = document.getElementById('usersView');
+                const newsView = document.getElementById('newsView');
+
+                const switchTab = (activeTab) => {
+                    [requestsTabBtn, usersTabBtn, newsTabBtn].forEach(btn => btn.classList.remove('active'));
+                    [requestsView, usersView, newsView].forEach(view => view.classList.add('hidden'));
+
+                    if (activeTab === 'users') {
+                        usersTabBtn.classList.add('active');
+                        usersView.classList.remove('hidden');
+                        renderUserManagement();
+                    } else if (activeTab === 'news') {
+                        newsTabBtn.classList.add('active');
+                        newsView.classList.remove('hidden');
+                        renderNewsManagement();
+                    } else { // 'requests' is default
+                        requestsTabBtn.classList.add('active');
+                        requestsView.classList.remove('hidden');
+                        renderBookRequests();
+                    }
+                };
+                
+                requestsTabBtn.onclick = () => switchTab('requests');
+                usersTabBtn.onclick = () => switchTab('users');
+                newsTabBtn.onclick = () => switchTab('news');
+
+                switchTab('requests'); // Default tab
+                openModal(dashboardModal);
+            };
+
+            window.fulfillRequest = (reqId) => {
+                const request = bookRequests.find(r => r.id === reqId);
+                bookRequests = bookRequests.filter(r => r.id !== reqId);
+                saveBookRequestsState();
+                renderBookRequests(); 
+                openAdminModal(); 
+                document.getElementById('bookTitle').value = request.title;
+                document.getElementById('bookAuthor').value = request.author;
+            };
+            window.rejectRequest = (reqId) => {
+                bookRequests = bookRequests.filter(r => r.id !== reqId);
+                saveBookRequestsState();
+                renderBookRequests();
+            };
+            
+            window.openNewsModal = () => {
+                const allNewsList = document.getElementById('allNewsList');
+                const sortedNews = [...news].sort((a,b) => b.timestamp - a.timestamp);
+                allNewsList.innerHTML = sortedNews.length > 0 ? sortedNews.map(item => `
+                    <div class="border-b pb-4">
+                        <h3 class="text-xl font-bold text-gray-800">${item.title}</h3>
+                        <p class="text-xs text-gray-400 mb-2">${new Date(item.timestamp).toLocaleString()}</p>
+                        <p class="text-gray-600 whitespace-pre-wrap">${item.content}</p>
+                    </div>
+                `).join('') : '<p class="text-center text-gray-500">Tidak ada pengumuman saat ini.</p>';
+                openModal(newsModal);
+            };
+
+            window.openFriendsModal = () => {
+                const currentUser = users.find(u => u.username === currentSession.username);
+                const friendsListDiv = document.getElementById('friendsList');
+                friendsListDiv.innerHTML = users
+                    .filter(u => u.username !== currentSession.username && u.role !== 'admin')
+                    .map(user => `
+                    <div class="flex justify-between items-center p-3 hover:bg-gray-50 rounded-lg">
+                        <p class="font-semibold">${user.username}</p>
+                        <button onclick="toggleFriend('${user.username}')" class="${currentUser.friends.includes(user.username) ? 'bg-red-500' : 'bg-blue-500'} text-white text-xs font-bold py-1 px-3 rounded-full hover:opacity-80 transition">
+                            ${currentUser.friends.includes(user.username) ? 'Hapus' : 'Tambah'}
+                        </button>
+                    </div>
+                `).join('');
+                openModal(friendsModal);
+            };
+
+            window.toggleFriend = (friendUsername) => {
+                const userIndex = users.findIndex(u => u.username === currentSession.username);
+                const friendIndex = users[userIndex].friends.indexOf(friendUsername);
+                if (friendIndex > -1) {
+                    users[userIndex].friends.splice(friendIndex, 1);
+                } else {
+                    users[userIndex].friends.push(friendUsername);
+                }
+                saveUsersState();
+                openFriendsModal(); // refresh
+            };
+
+            window.openDonationModal = () => openModal(donationModal);
+            window.openDonationHistoryModal = () => {
+                const historyList = document.getElementById('donationHistoryList');
+                const userDonations = donations.filter(d => d.username === currentSession.username);
+                historyList.innerHTML = userDonations.length > 0 ? `
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 text-xs text-gray-700 uppercase"><tr><th class="p-3">Tanggal</th><th class="p-3">Jumlah</th></tr></thead>
+                        <tbody>
+                            ${userDonations.map(d => `<tr class="border-b"><td class="p-3">${new Date(d.date).toLocaleDateString()}</td><td class="p-3">Rp ${d.amount.toLocaleString('id-ID')}</td></tr>`).join('')}
+                        </tbody>
+                    </table>` 
+                    : '<p class="text-center text-gray-500 p-4">Anda belum pernah berdonasi.</p>';
+                openModal(donationHistoryModal);
+            };
+
+            window.borrowBook = (bookId) => {
+                const bookIndex = books.findIndex(b => b.id === bookId);
+                if (bookIndex !== -1 && books[bookIndex].status === 'available') {
+                    books[bookIndex].status = 'borrowed';
+                    books[bookIndex].borrowedBy = currentSession.username;
+                    saveBooksState();
+                    closeModal(bookModal);
+                    renderBooks(books);
+                }
+            };
+            
+            window.returnBook = (bookId) => {
+                const bookIndex = books.findIndex(b => b.id === bookId);
+                if (bookIndex !== -1) {
+                    const returnedBook = books[bookIndex];
+                    if (returnedBook.wishlistedBy && returnedBook.wishlistedBy.length > 0) {
+                        returnedBook.wishlistedBy.forEach(username => {
+                            notifications.push({ id: Date.now() + Math.random(), userId: username, message: `Buku "${returnedBook.title}" yang Anda tunggu kini telah tersedia!`, bookId: returnedBook.id, read: false, timestamp: Date.now() });
+                        });
+                        books[bookIndex].wishlistedBy = [];
+                        saveNotificationsState();
+                    }
+                    books[bookIndex].status = 'available';
+                    delete books[bookIndex].borrowedBy;
+                    saveBooksState();
+                    closeModal(bookModal);
+                    renderBooks(books);
+                }
+            };
+            
+            // --- FUNGSI ADMIN ---
+            window.openAdminModal = (bookId = null) => {
+                adminForm.reset();
+                const title = document.getElementById('adminModalTitle');
+                document.getElementById('bookId').value = '';
+                if (bookId) {
+                    const book = books.find(b => b.id === bookId);
+                    if(book) {
+                        title.textContent = 'Edit Buku';
+                        document.getElementById('bookId').value = book.id;
+                        document.getElementById('bookTitle').value = book.title;
+                        document.getElementById('bookAuthor').value = book.author;
+                        document.getElementById('bookCover').value = book.cover;
+                        document.getElementById('bookISBN').value = book.isbn;
+                        document.getElementById('bookYear').value = book.year;
+                        document.getElementById('bookPublisher').value = book.publisher;
+                        document.getElementById('bookGenre').value = book.genre;
+                        document.getElementById('bookDesc').value = book.description;
+                    }
+                } else {
+                    title.textContent = 'Tambah Buku Baru';
+                }
+                openModal(adminModal);
+            };
+
+            window.openUserAdminModal = (username = null) => {
+                userAdminForm.reset();
+                const title = document.getElementById('userAdminModalTitle');
+                const originalUsernameInput = document.getElementById('originalUsername');
+                const passwordHint = document.getElementById('passwordHint');
+
+                if (username) {
+                    const user = users.find(u => u.username === username);
+                    if (user) {
+                        title.textContent = 'Edit Pengguna';
+                        originalUsernameInput.value = user.username;
+                        document.getElementById('adminUsername').value = user.username;
+                        passwordHint.textContent = "Biarkan kosong jika tidak ingin mengubah password.";
+                    }
+                } else {
+                    title.textContent = 'Tambah Pengguna Baru';
+                    originalUsernameInput.value = '';
+                    passwordHint.textContent = "Password wajib diisi untuk pengguna baru.";
+                }
+                openModal(userAdminModal);
+            };
+            
+            window.deleteUser = (username) => {
+                 const confirmText = document.getElementById('confirmModalText');
+                const confirmOkBtn = document.getElementById('confirmOkBtn');
+
+                confirmText.textContent = `Anda yakin ingin menghapus pengguna "${username}"? Tindakan ini tidak dapat diurungkan.`;
+                confirmOkBtn.className = 'px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition';
+                confirmOkBtn.textContent = 'Ya, Hapus';
+                openModal(confirmModal);
+                
+                confirmOkBtn.onclick = () => {
+                    users = users.filter(u => u.username !== username);
+                    saveUsersState();
+                    renderUserManagement();
+                    closeModal(confirmModal);
+                    showToast(`Pengguna ${username} telah dihapus.`);
+                };
+            };
+
+            window.deleteBook = (bookId) => {
+                const book = books.find(b => b.id === bookId);
+                if (!book) return;
+                const confirmText = document.getElementById('confirmModalText');
+                const confirmOkBtn = document.getElementById('confirmOkBtn');
+                confirmText.textContent = `Anda yakin ingin menghapus buku "${book.title}"?`;
+                confirmOkBtn.className = 'px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition';
+                confirmOkBtn.textContent = 'Ya, Hapus';
+                openModal(confirmModal);
+                confirmOkBtn.onclick = () => {
+                    books = books.filter(b => b.id !== bookId);
+                    saveBooksState();
+                    renderBooks(books);
+                    closeModal(confirmModal);
+                    closeModal(bookModal);
+                };
+            };
+            
+            window.openNewsAdminModal = (newsId = null) => {
+                newsAdminForm.reset();
+                const title = document.getElementById('newsAdminModalTitle');
+                document.getElementById('newsId').value = '';
+                if (newsId) {
+                    const newsItem = news.find(n => n.id === newsId);
+                    if (newsItem) {
+                        title.textContent = 'Edit Berita';
+                        document.getElementById('newsId').value = newsItem.id;
+                        document.getElementById('newsTitle').value = newsItem.title;
+                        document.getElementById('newsContent').value = newsItem.content;
+                    }
+                } else {
+                    title.textContent = 'Tambah Berita Baru';
+                }
+                openModal(newsAdminModal);
+            };
+
+            window.deleteNews = (newsId) => {
+                const newsItem = news.find(n => n.id === newsId);
+                if (!newsItem) return;
+                const confirmText = document.getElementById('confirmModalText');
+                const confirmOkBtn = document.getElementById('confirmOkBtn');
+                confirmText.textContent = `Anda yakin ingin menghapus berita "${newsItem.title}"?`;
+                openModal(confirmModal);
+                confirmOkBtn.onclick = () => {
+                    news = news.filter(n => n.id !== newsId);
+                    saveNewsState();
+                    renderNewsManagement();
+                    renderNews();
+                    closeModal(confirmModal);
+                    showToast("Berita telah dihapus.");
+                };
+            };
+            
+            // --- EVENT LISTENERS ---
+            searchInput.addEventListener('input', () => {
+                const query = searchInput.value.toLowerCase().trim();
+                const filteredBooks = books.filter(book => 
+                    book.title.toLowerCase().includes(query) ||
+                    book.author.toLowerCase().includes(query) ||
+                    book.isbn.includes(query) || // Fitur 3: Pencarian Cerdas
+                    book.description.toLowerCase().includes(query) // Fitur 3: Pencarian Cerdas
+                );
+                renderBooks(filteredBooks);
+            });
+            
+            cancelAdminModal.addEventListener('click', () => closeModal(adminModal));
+            adminForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const id = document.getElementById('bookId').value;
+                const bookData = {
+                    title: document.getElementById('bookTitle').value,
+                    author: document.getElementById('bookAuthor').value,
+                    cover: document.getElementById('bookCover').value,
+                    isbn: document.getElementById('bookISBN').value,
+                    year: parseInt(document.getElementById('bookYear').value),
+                    publisher: document.getElementById('bookPublisher').value,
+                    genre: document.getElementById('bookGenre').value,
+                    description: document.getElementById('bookDesc').value,
+                };
+                if (id) {
+                    const bookIndex = books.findIndex(b => b.id == id);
+                    if (bookIndex !== -1) books[bookIndex] = { ...books[bookIndex], ...bookData };
+                } else {
+                    const newBook = { ...bookData, id: Date.now(), status: 'available', rating: 0, totalRatings: 0, wishlistedBy: [], reviews: [] };
+                    books.unshift(newBook);
+                }
+                saveBooksState();
+                renderBooks(books);
+                closeModal(adminModal);
+            });
+            
+            userAdminForm.addEventListener('submit', e => {
+                e.preventDefault();
+                const originalUsername = document.getElementById('originalUsername').value;
+                const username = document.getElementById('adminUsername').value.trim();
+                const password = document.getElementById('adminPassword').value;
+
+                if (!username) {
+                    showToast("Username tidak boleh kosong.");
+                    return;
+                }
+
+                if (username !== originalUsername && users.some(u => u.username === username)) {
+                    showToast("Username sudah digunakan. Harap pilih yang lain.");
+                    return;
+                }
+
+                if (originalUsername) { // Editing
+                    const userIndex = users.findIndex(u => u.username === originalUsername);
+                    if (userIndex > -1) {
+                        users[userIndex].username = username;
+                        if (password) {
+                            users[userIndex].password = password;
+                        }
+                    }
+                     showToast(`Data pengguna ${username} diperbarui.`);
+                } else { // Adding
+                    if (!password) {
+                        showToast("Password wajib diisi untuk pengguna baru.");
+                        return;
+                    }
+                    users.push({ username, password, role: 'user', friends: [] });
+                    showToast(`Pengguna ${username} berhasil ditambahkan.`);
+                }
+                
+                saveUsersState();
+                renderUserManagement();
+                closeModal(userAdminModal);
+            });
+            
+            newsAdminForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const id = document.getElementById('newsId').value;
+                const title = document.getElementById('newsTitle').value;
+                const content = document.getElementById('newsContent').value;
+
+                if (id) { // Editing
+                    const newsIndex = news.findIndex(n => n.id == id);
+                    if (newsIndex > -1) {
+                        news[newsIndex].title = title;
+                        news[newsIndex].content = content;
+                    }
+                } else { // Adding
+                    news.push({ id: Date.now(), title, content, timestamp: Date.now() });
+                }
+                saveNewsState();
+                renderNewsManagement();
+                renderNews();
+                closeModal(newsAdminModal);
+            });
+
+            requestForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const title = document.getElementById('requestTitle').value;
+                const author = document.getElementById('requestAuthor').value;
+                bookRequests.push({ id: 'req_' + Date.now(), title, author, requestedBy: currentSession.username, status: 'pending' });
+                saveBookRequestsState();
+                requestForm.reset();
+                closeModal(requestModal);
+                showToast('Permintaan buku telah dikirim!');
+            });
+            
+            donationForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const amount = parseInt(document.getElementById('donationAmount').value);
+                if (isNaN(amount) || amount < 1000) {
+                    showToast("Jumlah donasi minimal adalah Rp 1.000.");
+                    return;
+                }
+                donations.push({ id: 'don_' + Date.now(), username: currentSession.username, amount, date: new Date().toISOString() });
+                saveDonationsState();
+                donationForm.reset();
+                closeModal(donationModal);
+                showToast("Terima kasih atas donasi Anda!");
+            });
+
+            notificationBell.addEventListener('click', (e) => {
+                e.stopPropagation();
+                notificationDropdown.classList.toggle('hidden');
+            });
+            document.addEventListener('click', (e) => {
+                 if (!notificationBell.contains(e.target)) {
+                     notificationDropdown.classList.add('hidden');
+                 }
+            });
+            
+            [bookModal, adminModal, confirmModal, requestModal, dashboardModal, userAdminModal, friendsModal, donationModal, donationHistoryModal, newsAdminModal, newsModal].forEach(modal => {
+                modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal) });
+            });
+            document.getElementById('confirmCancelBtn').addEventListener('click', () => closeModal(confirmModal));
+
+            // --- INISIALISASI ---
+            initData();
+            const session = JSON.parse(sessionStorage.getItem('ePerpusSession'));
+            if (session) {
+                startApp(session);
+            }
+        });
+    </script>
+</body>
+</html>
+
