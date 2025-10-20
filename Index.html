@@ -131,8 +131,8 @@
                 <p class="text-lg text-gray-500 dark:text-gray-400 mt-2">Gerbang Pengetahuan di Ujung Jari Anda</p>
                 <div class="absolute top-0 right-0 flex items-center gap-4">
                     <button id="themeToggleBtn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-                        <i data-lucide="sun" class="w-6 h-6 text-gray-600 hidden dark:hidden"></i>
-                        <i data-lucide="moon" class="w-6 h-6 text-gray-300 hidden"></i>
+                        <i data-lucide="sun" class="w-6 h-6 text-gray-600 dark:hidden"></i>
+                        <i data-lucide="moon" class="w-6 h-6 text-gray-300 hidden dark:block"></i>
                     </button>
                     <div id="notificationBell" class="relative cursor-pointer">
                         <i data-lucide="bell" class="w-6 h-6 text-gray-600 dark:text-gray-300"></i>
@@ -559,16 +559,9 @@
                 theme = newTheme;
                 if (theme === 'dark') {
                     document.documentElement.classList.add('dark');
-                    sunIcon.classList.remove('dark:hidden');
-                    moonIcon.classList.add('dark:block');
                 } else {
                     document.documentElement.classList.remove('dark');
-                    sunIcon.classList.remove('dark:hidden');
-                    moonIcon.classList.remove('dark:block');
                 }
-                // Toggle icon visibility based on the new theme
-                sunIcon.style.display = theme === 'dark' ? 'block' : 'none';
-                moonIcon.style.display = theme === 'light' ? 'block' : 'none';
                 saveThemeState();
             };
 
@@ -1275,6 +1268,15 @@
                 const bookIndex = books.findIndex(b => b.id === bookId);
                 if (bookIndex !== -1) {
                     const returnedBook = books[bookIndex];
+                    
+                    // Hapus notifikasi batas waktu untuk buku ini
+                    const initialNotifCount = notifications.length;
+                    notifications = notifications.filter(n => !(n.type === 'due_reminder' && n.bookId === bookId && n.userId === currentSession.username));
+                    if (notifications.length < initialNotifCount) {
+                        saveNotificationsState();
+                        renderNotifications();
+                    }
+
                     if (returnedBook.wishlistedBy && returnedBook.wishlistedBy.length > 0) {
                         returnedBook.wishlistedBy.forEach(username => {
                             notifications.push({ id: Date.now() + Math.random(), userId: username, message: `Buku "${returnedBook.title}" yang Anda tunggu kini telah tersedia!`, bookId: returnedBook.id, read: false, timestamp: Date.now() });
@@ -1650,3 +1652,5 @@
     </script>
 </body>
 </html>
+
+
