@@ -10,14 +10,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
+        :root {
+            color-scheme: light;
+        }
+        html.dark {
+            color-scheme: dark;
+        }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #FDFBF8; /* Warna latar belakang default */
-            transition: background-image 0.5s ease-in-out;
+            background-color: #f7f7f7; /* Warna latar belakang abu-abu terang */
+            transition: background-color 0.3s ease-in-out, background-image 0.5s ease-in-out;
+        }
+        .dark body {
+            background-color: #030712;
         }
         .app-background {
-            background: linear-gradient(rgba(253, 251, 248, 0.95), rgba(253, 251, 248, 0.95)), url('https://images.unsplash.com/photo-1550399105-c4db5fb85c18?q=80&w=2071&auto=format&fit=crop') no-repeat center center fixed;
+            background: linear-gradient(rgba(248, 250, 252, 0.92), rgba(248, 250, 252, 0.92)), url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=2128&auto=format&fit=crop') no-repeat center center fixed;
             background-size: cover;
+        }
+        .dark .app-background {
+             background: linear-gradient(rgba(17, 24, 39, 0.96), rgba(17, 24, 39, 0.96)), url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=2128&auto=format&fit=crop') no-repeat center center fixed;
+             background-size: cover;
         }
         .book-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -63,6 +76,11 @@
             color: #b45309; /* amber-700 */
             border-bottom: 2px solid #b45309;
         }
+         .dark .dashboard-tab.active {
+            background-color: #374151;
+            color: #fcd34d;
+            border-bottom-color: #fcd34d;
+        }
         .login-background {
             background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2070&auto=format&fit=crop');
             background-size: cover;
@@ -70,30 +88,26 @@
         }
     </style>
 </head>
-<body class="text-gray-800">
+<body class="text-gray-800 dark:text-gray-200">
 
     <!-- Kontainer Login & Registrasi -->
     <div id="authContainer" class="min-h-screen flex items-center justify-center login-background">
-        <div class="max-w-md w-full bg-white p-8 rounded-2xl shadow-lg">
+        <div class="max-w-md w-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-8 rounded-2xl shadow-lg">
             <div class="text-center mb-8">
-                 <h1 class="text-3xl font-bold text-amber-900">Selamat Datang di Smart E-Library</h1>
-                 <p class="text-gray-500 mt-2">Silakan masuk untuk memulai.</p>
+                 <h1 class="text-3xl font-bold text-amber-900 dark:text-amber-300">Selamat Datang di Smart E-Library</h1>
+                 <p class="text-gray-500 dark:text-gray-400 mt-2">Silakan masuk untuk memulai.</p>
             </div>
             <form id="loginForm">
                 <div class="mb-4">
-                    <label for="loginUsername" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
-                    <input type="text" id="loginUsername" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-amber-500 focus:border-amber-500" required>
+                    <label for="loginUsername" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Username</label>
+                    <input type="text" id="loginUsername" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-amber-500 focus:border-amber-500 bg-white dark:bg-gray-700" required>
                 </div>
                 <div class="mb-6">
-                    <label for="loginPassword" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                    <input type="password" id="loginPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-amber-500 focus:border-amber-500" required>
+                    <label for="loginPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                    <input type="password" id="loginPassword" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-amber-500 focus:border-amber-500 bg-white dark:bg-gray-700" required>
                 </div>
-                <p id="loginError" class="text-red-500 text-sm text-center mb-4 hidden"></p>
-                <button type="submit" class="w-full bg-amber-600 text-white py-2.5 rounded-lg font-semibold hover:bg-amber-700 transition">Login</button>
-                 <div class="mt-4 text-xs text-center text-gray-400">
-                    <p>Admin: admin123 / admin123</p>
-                    <p>User: joko / joko123, siti / siti123</p>
-                </div>
+                <p id="loginError" class="text-red-500 dark:text-red-400 text-sm text-center mb-4 hidden"></p>
+                <button type="submit" class="w-full bg-amber-600 text-white py-2.5 rounded-lg font-semibold hover:bg-amber-700 dark:hover:bg-amber-500 transition">Login</button>
             </form>
         </div>
     </div>
@@ -104,7 +118,7 @@
             <header class="text-center mb-8 relative">
                 <div class="flex items-center justify-center gap-4">
                     <!-- SVG Logo -->
-                    <svg class="w-14 h-14 text-amber-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="w-14 h-14 text-amber-800 dark:text-amber-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
                         <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
                         <path d="M12 8.5v-2a.5.5 0 0 1 .5-.5h0a.5.5 0 0 1 .5.5v2"></path>
@@ -112,15 +126,18 @@
                         <path d="M15.5 12h-2a.5.5 0 0 1-.5-.5v0a.5.5 0 0 1 .5-.5h2"></path>
                         <path d="M8.5 12h-2a.5.5 0 0 1-.5-.5v0a.5.5 0 0 1 .5-.5h2"></path>
                     </svg>
-                    <h1 class="text-4xl md:text-5xl font-bold text-amber-900 tracking-tight">Smart E-Library</h1>
+                    <h1 class="text-4xl md:text-5xl font-bold text-amber-900 dark:text-amber-300 tracking-tight">Smart E-Library</h1>
                 </div>
-                <p class="text-lg text-gray-500 mt-2">Gerbang Pengetahuan di Ujung Jari Anda</p>
+                <p class="text-lg text-gray-500 dark:text-gray-400 mt-2">Gerbang Pengetahuan di Ujung Jari Anda</p>
                 <div class="absolute top-0 right-0 flex items-center gap-4">
-                    <div id="userMenu" class="flex items-center gap-3"></div>
+                    <button id="themeToggleBtn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                        <i data-lucide="sun" class="w-6 h-6 text-gray-600 hidden dark:hidden"></i>
+                        <i data-lucide="moon" class="w-6 h-6 text-gray-300 hidden"></i>
+                    </button>
                     <div id="notificationBell" class="relative cursor-pointer">
-                        <i data-lucide="bell" class="w-6 h-6 text-gray-600"></i>
+                        <i data-lucide="bell" class="w-6 h-6 text-gray-600 dark:text-gray-300"></i>
                         <span id="notificationDot" class="hidden absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
-                        <div id="notificationDropdown" class="hidden absolute top-full right-0 mt-2 w-72 bg-white rounded-lg shadow-xl border z-10"></div>
+                        <div id="notificationDropdown" class="hidden absolute top-full right-0 mt-2 w-72 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 z-10"></div>
                     </div>
                     <div id="sessionInfo" class="text-right"></div>
                 </div>
@@ -132,21 +149,24 @@
             <!-- Fitur Lanjutkan Membaca -->
             <div id="continueReading" class="hidden mb-8 max-w-2xl mx-auto"></div>
 
+            <!-- User Action Buttons -->
+            <div id="userActions" class="mb-10 max-w-4xl mx-auto flex flex-wrap justify-center items-center gap-3"></div>
+
             <div class="mb-10 max-w-2xl mx-auto flex gap-4 items-center">
                 <div class="relative flex-grow">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                         <i data-lucide="search" class="w-5 h-5 text-gray-400"></i>
                     </div>
                     <input type="text" id="searchInput" placeholder="Cari judul, penulis, ISBN..."
-                        class="w-full py-3 pl-12 pr-4 text-gray-700 bg-white border border-gray-200 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 transition">
+                        class="w-full py-3 pl-12 pr-4 text-gray-700 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-500 dark:text-gray-200 transition">
                 </div>
             </div>
             <main id="book-collection" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-8">
             </main>
             <div id="no-results" class="hidden text-center py-12">
                 <i data-lucide="folder-search" class="w-16 h-16 mx-auto text-gray-400"></i>
-                <h3 class="mt-4 text-xl font-semibold text-gray-600">Buku tidak ditemukan</h3>
-                <p class="mt-1 text-gray-500">Coba gunakan kata kunci lain.</p>
+                <h3 class="mt-4 text-xl font-semibold text-gray-600 dark:text-gray-400">Buku tidak ditemukan</h3>
+                <p class="mt-1 text-gray-500 dark:text-gray-400">Coba gunakan kata kunci lain.</p>
             </div>
         </div>
     </div>
@@ -155,51 +175,51 @@
     
     <!-- Modal Detail Buku -->
     <div id="bookModal" class="fixed inset-0 z-50 items-center justify-center p-4 hidden modal-bg">
-        <div id="modalContent" class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col md:flex-row overflow-hidden transform transition-all duration-300 scale-95 opacity-0"></div>
+        <div id="modalContent" class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col md:flex-row overflow-hidden transform transition-all duration-300 scale-95 opacity-0"></div>
     </div>
     
     <!-- Modal Admin (Tambah/Edit Buku) -->
     <div id="adminModal" class="fixed inset-0 z-50 items-center justify-center p-4 hidden modal-bg">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-95 opacity-0">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-95 opacity-0">
             <form id="adminForm" class="p-8 max-h-[90vh] overflow-y-auto">
-                <h2 id="adminModalTitle" class="text-2xl font-bold text-amber-900 mb-6">Tambah Buku Baru</h2>
+                <h2 id="adminModalTitle" class="text-2xl font-bold text-amber-900 dark:text-amber-300 mb-6">Tambah Buku Baru</h2>
                 <input type="hidden" id="bookId">
                 <div class="grid grid-cols-1 gap-5">
                     <div>
-                        <label for="bookTitle" class="block text-sm font-medium text-gray-700">Judul</label>
-                        <input type="text" id="bookTitle" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required>
+                        <label for="bookTitle" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Judul</label>
+                        <input type="text" id="bookTitle" class="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500 bg-white dark:bg-gray-700" required>
                     </div>
                     <div>
-                        <label for="bookAuthor" class="block text-sm font-medium text-gray-700">Penulis</label>
-                        <input type="text" id="bookAuthor" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required>
+                        <label for="bookAuthor" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Penulis</label>
+                        <input type="text" id="bookAuthor" class="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500 bg-white dark:bg-gray-700" required>
                     </div>
                     <div>
-                        <label for="bookCover" class="block text-sm font-medium text-gray-700">URL Sampul</label>
-                        <input type="url" id="bookCover" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" placeholder="https://..." required>
+                        <label for="bookCover" class="block text-sm font-medium text-gray-700 dark:text-gray-300">URL Sampul</label>
+                        <input type="url" id="bookCover" class="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500 bg-white dark:bg-gray-700" placeholder="https://..." required>
                     </div>
                      <div>
-                        <label for="bookISBN" class="block text-sm font-medium text-gray-700">ISBN</label>
-                        <input type="text" id="bookISBN" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required>
+                        <label for="bookISBN" class="block text-sm font-medium text-gray-700 dark:text-gray-300">ISBN</label>
+                        <input type="text" id="bookISBN" class="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500 bg-white dark:bg-gray-700" required>
                     </div>
                      <div>
-                        <label for="bookYear" class="block text-sm font-medium text-gray-700">Tahun Terbit</label>
-                        <input type="number" id="bookYear" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required>
+                        <label for="bookYear" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tahun Terbit</label>
+                        <input type="number" id="bookYear" class="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500 bg-white dark:bg-gray-700" required>
                     </div>
                      <div>
-                        <label for="bookPublisher" class="block text-sm font-medium text-gray-700">Penerbit</label>
-                        <input type="text" id="bookPublisher" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required>
+                        <label for="bookPublisher" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Penerbit</label>
+                        <input type="text" id="bookPublisher" class="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500 bg-white dark:bg-gray-700" required>
                     </div>
                     <div>
-                        <label for="bookGenre" class="block text-sm font-medium text-gray-700">Genre</label>
-                        <input type="text" id="bookGenre" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" placeholder="Fiksi, Sejarah" required>
+                        <label for="bookGenre" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Genre</label>
+                        <input type="text" id="bookGenre" class="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500 bg-white dark:bg-gray-700" placeholder="Fiksi, Sejarah" required>
                     </div>
                      <div>
-                        <label for="bookDesc" class="block text-sm font-medium text-gray-700">Deskripsi</label>
-                        <textarea id="bookDesc" rows="3" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required></textarea>
+                        <label for="bookDesc" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Deskripsi</label>
+                        <textarea id="bookDesc" rows="3" class="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500 bg-white dark:bg-gray-700" required></textarea>
                     </div>
                 </div>
                 <div class="mt-8 flex justify-end gap-4">
-                    <button type="button" id="cancelAdminModal" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition">Batal</button>
+                    <button type="button" id="cancelAdminModal" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 transition">Batal</button>
                     <button type="submit" class="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition">Simpan</button>
                 </div>
             </form>
@@ -208,11 +228,11 @@
     
     <!-- Modal Konfirmasi -->
     <div id="confirmModal" class="fixed inset-0 z-[60] items-center justify-center p-4 hidden modal-bg">
-        <div id="confirmModalContent" class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-8 text-center transform transition-all duration-300 scale-95 opacity-0">
+        <div id="confirmModalContent" class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-sm p-8 text-center transform transition-all duration-300 scale-95 opacity-0">
             <i data-lucide="alert-triangle" class="w-16 h-16 mx-auto text-amber-500"></i>
-            <h3 id="confirmModalText" class="text-lg font-semibold text-gray-800 mt-4">Apakah Anda yakin?</h3>
+            <h3 id="confirmModalText" class="text-lg font-semibold text-gray-800 dark:text-gray-200 mt-4">Apakah Anda yakin?</h3>
             <div class="mt-6 flex justify-center gap-4">
-                <button id="confirmCancelBtn" class="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition">Batal</button>
+                <button id="confirmCancelBtn" class="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 transition">Batal</button>
                 <button id="confirmOkBtn" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">Ya, Hapus</button>
             </div>
         </div>
@@ -220,21 +240,21 @@
 
     <!-- Modal Permintaan Buku -->
     <div id="requestModal" class="fixed inset-0 z-50 items-center justify-center p-4 hidden modal-bg">
-         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-95 opacity-0">
+         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-95 opacity-0">
              <form id="requestForm" class="p-8">
-                 <h2 class="text-2xl font-bold text-amber-900 mb-6">Minta Buku Baru</h2>
+                 <h2 class="text-2xl font-bold text-amber-900 dark:text-amber-300 mb-6">Minta Buku Baru</h2>
                  <div class="grid grid-cols-1 gap-5">
                     <div>
-                        <label for="requestTitle" class="block text-sm font-medium text-gray-700">Judul Buku</label>
-                        <input type="text" id="requestTitle" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required>
+                        <label for="requestTitle" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Judul Buku</label>
+                        <input type="text" id="requestTitle" class="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500 bg-white dark:bg-gray-700" required>
                     </div>
                     <div>
-                        <label for="requestAuthor" class="block text-sm font-medium text-gray-700">Penulis</label>
-                        <input type="text" id="requestAuthor" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required>
+                        <label for="requestAuthor" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Penulis</label>
+                        <input type="text" id="requestAuthor" class="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500 bg-white dark:bg-gray-700" required>
                     </div>
                  </div>
                  <div class="mt-8 flex justify-end gap-4">
-                    <button type="button" onclick="closeModal(requestModal)" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition">Batal</button>
+                    <button type="button" onclick="closeModal(requestModal)" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 transition">Batal</button>
                     <button type="submit" class="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition">Kirim Permintaan</button>
                 </div>
              </form>
@@ -243,16 +263,17 @@
     
     <!-- Modal Dashboard Admin -->
      <div id="dashboardModal" class="fixed inset-0 z-50 items-center justify-center p-4 hidden modal-bg">
-         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden transform transition-all duration-300 scale-95 opacity-0">
-            <div class="p-6 border-b flex justify-between items-center flex-shrink-0">
-                <h2 class="text-2xl font-bold text-amber-900">Dashboard Admin</h2>
-                <button onclick="closeModal(dashboardModal)"><i data-lucide="x" class="w-6 h-6 text-gray-600"></i></button>
+         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden transform transition-all duration-300 scale-95 opacity-0">
+            <div class="p-6 border-b dark:border-gray-700 flex justify-between items-center flex-shrink-0">
+                <h2 class="text-2xl font-bold text-amber-900 dark:text-amber-300">Dashboard Admin</h2>
+                <button onclick="closeModal(dashboardModal)"><i data-lucide="x" class="w-6 h-6 text-gray-600 dark:text-gray-300"></i></button>
             </div>
             <!-- Tabs -->
-            <div class="flex border-b px-6 flex-shrink-0">
+            <div class="flex border-b dark:border-gray-700 px-6 flex-shrink-0">
                 <button id="requestsTabBtn" class="dashboard-tab py-3 px-4 font-semibold text-sm">Permintaan Buku</button>
                 <button id="usersTabBtn" class="dashboard-tab py-3 px-4 font-semibold text-sm">Pengelola Pengguna</button>
                 <button id="newsTabBtn" class="dashboard-tab py-3 px-4 font-semibold text-sm">Manajemen Berita</button>
+                <button id="feedbackTabBtn" class="dashboard-tab py-3 px-4 font-semibold text-sm">Saran & Masukan</button>
             </div>
             <div class="flex-grow overflow-y-auto">
                 <!-- Requests View -->
@@ -280,29 +301,34 @@
                     </div>
                     <div id="newsManagementList" class="space-y-3"></div>
                 </div>
+                <!-- Feedback View -->
+                <div id="feedbackView" class="hidden p-6">
+                    <h3 class="text-xl font-semibold mb-4">Saran & Masukan dari Pengguna</h3>
+                    <div id="feedbackList" class="space-y-3"></div>
+                </div>
             </div>
          </div>
     </div>
 
     <!-- Modal Pengelola Pengguna -->
     <div id="userAdminModal" class="fixed inset-0 z-[55] items-center justify-center p-4 hidden modal-bg">
-         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-95 opacity-0">
+         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-95 opacity-0">
              <form id="userAdminForm" class="p-8">
-                 <h2 id="userAdminModalTitle" class="text-2xl font-bold text-amber-900 mb-6">Tambah Pengguna</h2>
+                 <h2 id="userAdminModalTitle" class="text-2xl font-bold text-amber-900 dark:text-amber-300 mb-6">Tambah Pengguna</h2>
                  <input type="hidden" id="originalUsername">
                  <div class="grid grid-cols-1 gap-5">
                     <div>
-                        <label for="adminUsername" class="block text-sm font-medium text-gray-700">Username</label>
-                        <input type="text" id="adminUsername" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required>
+                        <label for="adminUsername" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Username</label>
+                        <input type="text" id="adminUsername" class="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500 bg-white dark:bg-gray-700" required>
                     </div>
                     <div>
-                        <label for="adminPassword" class="block text-sm font-medium text-gray-700">Password</label>
-                        <input type="text" id="adminPassword" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500">
-                         <p id="passwordHint" class="text-xs text-gray-500 mt-1"></p>
+                        <label for="adminPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+                        <input type="text" id="adminPassword" class="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500 bg-white dark:bg-gray-700">
+                         <p id="passwordHint" class="text-xs text-gray-500 dark:text-gray-400 mt-1"></p>
                     </div>
                  </div>
                  <div class="mt-8 flex justify-end gap-4">
-                    <button type="button" onclick="closeModal(userAdminModal)" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition">Batal</button>
+                    <button type="button" onclick="closeModal(userAdminModal)" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 transition">Batal</button>
                     <button type="submit" class="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition">Simpan</button>
                 </div>
              </form>
@@ -311,22 +337,22 @@
     
     <!-- Modal Admin Berita -->
     <div id="newsAdminModal" class="fixed inset-0 z-[55] items-center justify-center p-4 hidden modal-bg">
-         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-95 opacity-0">
+         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-95 opacity-0">
              <form id="newsAdminForm" class="p-8">
-                 <h2 id="newsAdminModalTitle" class="text-2xl font-bold text-amber-900 mb-6">Tambah Berita Baru</h2>
+                 <h2 id="newsAdminModalTitle" class="text-2xl font-bold text-amber-900 dark:text-amber-300 mb-6">Tambah Berita Baru</h2>
                  <input type="hidden" id="newsId">
                  <div class="grid grid-cols-1 gap-5">
                     <div>
-                        <label for="newsTitle" class="block text-sm font-medium text-gray-700">Judul</label>
-                        <input type="text" id="newsTitle" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required>
+                        <label for="newsTitle" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Judul</label>
+                        <input type="text" id="newsTitle" class="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500 bg-white dark:bg-gray-700" required>
                     </div>
                     <div>
-                        <label for="newsContent" class="block text-sm font-medium text-gray-700">Isi Berita</label>
-                        <textarea id="newsContent" rows="5" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required></textarea>
+                        <label for="newsContent" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Isi Berita</label>
+                        <textarea id="newsContent" rows="5" class="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500 bg-white dark:bg-gray-700" required></textarea>
                     </div>
                  </div>
                  <div class="mt-8 flex justify-end gap-4">
-                    <button type="button" onclick="closeModal(newsAdminModal)" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition">Batal</button>
+                    <button type="button" onclick="closeModal(newsAdminModal)" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 transition">Batal</button>
                     <button type="submit" class="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition">Simpan</button>
                 </div>
              </form>
@@ -335,10 +361,10 @@
     
     <!-- Modal Lihat Semua Berita -->
     <div id="newsModal" class="fixed inset-0 z-50 items-center justify-center p-4 hidden modal-bg">
-         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden transform transition-all duration-300 scale-95 opacity-0">
-             <div class="p-6 border-b flex justify-between items-center">
-                <h2 class="text-2xl font-bold text-amber-900">Berita & Pengumuman</h2>
-                <button onclick="closeModal(newsModal)"><i data-lucide="x" class="w-6 h-6 text-gray-600"></i></button>
+         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden transform transition-all duration-300 scale-95 opacity-0">
+             <div class="p-6 border-b dark:border-gray-700 flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-amber-900 dark:text-amber-300">Berita & Pengumuman</h2>
+                <button onclick="closeModal(newsModal)"><i data-lucide="x" class="w-6 h-6 text-gray-600 dark:text-gray-300"></i></button>
              </div>
              <div id="allNewsList" class="p-6 overflow-y-auto space-y-6"></div>
          </div>
@@ -347,10 +373,10 @@
 
     <!-- Modal Teman Baca -->
     <div id="friendsModal" class="fixed inset-0 z-50 items-center justify-center p-4 hidden modal-bg">
-         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden transform transition-all duration-300 scale-95 opacity-0">
-             <div class="p-6 border-b flex justify-between items-center">
-                <h2 class="text-2xl font-bold text-amber-900">Teman Baca</h2>
-                <button onclick="closeModal(friendsModal)"><i data-lucide="x" class="w-6 h-6 text-gray-600"></i></button>
+         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden transform transition-all duration-300 scale-95 opacity-0">
+             <div class="p-6 border-b dark:border-gray-700 flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-amber-900 dark:text-amber-300">Teman Baca</h2>
+                <button onclick="closeModal(friendsModal)"><i data-lucide="x" class="w-6 h-6 text-gray-600 dark:text-gray-300"></i></button>
              </div>
              <div id="friendsList" class="p-6 overflow-y-auto"></div>
          </div>
@@ -358,17 +384,17 @@
 
     <!-- Modal Donasi -->
     <div id="donationModal" class="fixed inset-0 z-50 items-center justify-center p-4 hidden modal-bg">
-         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm text-center p-8 transform transition-all duration-300 scale-95 opacity-0">
+         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-sm text-center p-8 transform transition-all duration-300 scale-95 opacity-0">
              <form id="donationForm">
                 <i data-lucide="gift" class="w-16 h-16 mx-auto text-amber-500"></i>
-                <h2 class="text-2xl font-bold text-amber-900 mt-4 mb-2">Dukung Smart E-Library</h2>
-                <p class="text-gray-600 mb-6">Donasi Anda membantu kami menambah koleksi buku baru.</p>
+                <h2 class="text-2xl font-bold text-amber-900 dark:text-amber-300 mt-4 mb-2">Dukung Smart E-Library</h2>
+                <p class="text-gray-600 dark:text-gray-400 mb-6">Donasi Anda membantu kami menambah koleksi buku baru.</p>
                 <div>
-                    <label for="donationAmount" class="block text-sm font-medium text-gray-700 mb-2">Jumlah Donasi (IDR)</label>
-                    <input type="number" id="donationAmount" class="text-center w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required min="1000" step="1000" placeholder="Contoh: 50000">
+                    <label for="donationAmount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Jumlah Donasi (IDR)</label>
+                    <input type="number" id="donationAmount" class="text-center w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" required min="1000" step="1000" placeholder="Contoh: 50000">
                 </div>
                  <div class="mt-8 flex justify-center gap-4">
-                    <button type="button" onclick="closeModal(donationModal)" class="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition">Batal</button>
+                    <button type="button" onclick="closeModal(donationModal)" class="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 transition">Batal</button>
                     <button type="submit" class="px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition">Donasi Sekarang</button>
                 </div>
              </form>
@@ -377,17 +403,61 @@
 
     <!-- Modal Riwayat Donasi -->
     <div id="donationHistoryModal" class="fixed inset-0 z-50 items-center justify-center p-4 hidden modal-bg">
-         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden transform transition-all duration-300 scale-95 opacity-0">
-             <div class="p-6 border-b flex justify-between items-center">
-                <h2 class="text-2xl font-bold text-amber-900">Riwayat Donasi Anda</h2>
-                <button onclick="closeModal(donationHistoryModal)"><i data-lucide="x" class="w-6 h-6 text-gray-600"></i></button>
+         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden transform transition-all duration-300 scale-95 opacity-0">
+             <div class="p-6 border-b dark:border-gray-700 flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-amber-900 dark:text-amber-300">Riwayat Donasi Anda</h2>
+                <button onclick="closeModal(donationHistoryModal)"><i data-lucide="x" class="w-6 h-6 text-gray-600 dark:text-gray-300"></i></button>
              </div>
              <div id="donationHistoryList" class="p-6 overflow-y-auto"></div>
          </div>
     </div>
 
+    <!-- Modal Chat -->
+    <div id="chatModal" class="fixed inset-0 z-50 items-center justify-center p-4 hidden modal-bg">
+         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg h-[70vh] flex flex-col overflow-hidden transform transition-all duration-300 scale-95 opacity-0">
+             <div class="p-4 border-b dark:border-gray-700 flex justify-between items-center flex-shrink-0">
+                <h2 id="chatModalTitle" class="text-xl font-bold text-amber-900 dark:text-amber-300">Pesan</h2>
+                <button onclick="closeModal(chatModal)"><i data-lucide="x" class="w-6 h-6 text-gray-600 dark:text-gray-300"></i></button>
+             </div>
+             <div id="chatMessages" class="p-4 flex-grow overflow-y-auto flex flex-col space-y-4 bg-gray-50 dark:bg-gray-900">
+                <!-- Messages will be rendered here -->
+             </div>
+             <div class="p-4 border-t dark:border-gray-700 flex-shrink-0 bg-white dark:bg-gray-800">
+                <form id="chatForm" class="flex gap-2">
+                    <input type="hidden" id="chatRecipient">
+                    <input type="text" id="chatInput" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-amber-500 focus:border-amber-500 bg-white dark:bg-gray-700" placeholder="Ketik pesan..." required autocomplete="off">
+                    <button type="submit" class="bg-amber-600 text-white p-3 rounded-lg hover:bg-amber-700 transition flex-shrink-0"><i data-lucide="send"></i></button>
+                </form>
+             </div>
+         </div>
+    </div>
+
+    <!-- Modal Saran & Masukan -->
+    <div id="feedbackModal" class="fixed inset-0 z-50 items-center justify-center p-4 hidden modal-bg">
+         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-95 opacity-0">
+             <form id="feedbackForm" class="p-8">
+                 <h2 class="text-2xl font-bold text-amber-900 dark:text-amber-300 mb-6">Kirim Saran & Masukan</h2>
+                 <p class="text-gray-600 dark:text-gray-400 mb-6">Kami menghargai masukan Anda untuk membuat perpustakaan ini lebih baik.</p>
+                 <div class="grid grid-cols-1 gap-5">
+                    <div>
+                        <label for="feedbackSubject" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Subjek</label>
+                        <input type="text" id="feedbackSubject" class="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500 bg-white dark:bg-gray-700" placeholder="Contoh: Fitur baru, Laporan bug" required>
+                    </div>
+                    <div>
+                        <label for="feedbackMessage" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Pesan Anda</label>
+                        <textarea id="feedbackMessage" rows="5" class="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500 bg-white dark:bg-gray-700" required></textarea>
+                    </div>
+                 </div>
+                 <div class="mt-8 flex justify-end gap-4">
+                    <button type="button" onclick="closeModal(feedbackModal)" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 transition">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition">Kirim Masukan</button>
+                </div>
+             </form>
+         </div>
+    </div>
+
     <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-5 right-5 bg-gray-900 text-white py-2 px-5 rounded-lg shadow-lg opacity-0 z-[70]">
+    <div id="toast" class="fixed bottom-5 right-5 bg-gray-900 text-white py-2 px-5 rounded-lg shadow-lg opacity-0 z-[70] dark:bg-gray-100 dark:text-gray-900">
         <p id="toastMessage"></p>
     </div>
 
@@ -396,18 +466,18 @@
             
             // --- DATA BUKU (DEFAULT) ---
             const defaultBooks = [
-                { id: 1, isbn: "9789791227757", title: "Laskar Pelangi", author: "Andrea Hirata", year: 2005, publisher: "Bentang Pustaka", cover: "https://cdn.gramedia.com/uploads/items/9786230800041_Laskar_Pelangi.jpg", description: "Sebuah novel inspiratif tentang persahabatan dan perjuangan 10 anak di Belitung untuk terus bersekolah.", genre: "Fiksi, Inspiratif", status: "available", rating: 4.8, totalRatings: 1250, wishlistedBy: [], reviews: [{username: 'siti', rating: 5, text: 'Buku yang sangat menginspirasi!'}] },
-                { id: 2, isbn: "9789799731234", title: "Bumi Manusia", author: "Pramoedya Ananta Toer", year: 1980, publisher: "Hasta Mitra", cover: "https://cdn.gramedia.com/uploads/items/bumi-manusia.jpg", description: "Kisah Minke di era kolonial Hindia Belanda, mengeksplorasi tema nasionalisme, cinta, dan perlawanan.", genre: "Sejarah, Fiksi", status: "borrowed", borrowedBy: "joko", rating: 4.9, totalRatings: 980, wishlistedBy: ['siti'], reviews: [{username: 'joko', rating: 5, text: 'Karya sastra terbaik Indonesia.'}] },
-                { id: 3, isbn: "9786024122619", title: "Filosofi Teras", author: "Henry Manampiring", year: 2018, publisher: "Kompas Gramedia", cover: "https://cdn.gramedia.com/uploads/items/filosofi_teras_c-1_revisi_final.jpg", description: "Pengantar filsafat Stoisisme kuno yang relevan untuk kehidupan modern, membantu mengatasi emosi negatif.", genre: "Self-Help, Filsafat", status: "available", rating: 4.7, totalRatings: 1120, wishlistedBy: [], reviews: [] },
-                { id: 4, isbn: "9786024244588", title: "Sapiens: Riwayat Singkat Umat Manusia", author: "Yuval Noah Harari", year: 2011, publisher: "KPG", cover: "https://cdn.gramedia.com/uploads/items/sapiens-riwayat-singkat-umat-manusia.jpg", description: "Sebuah penelusuran sejarah umat manusia dari Zaman Batu hingga Abad ke-21.", genre: "Sains, Sejarah", status: "available", rating: 4.9, totalRatings: 1500, wishlistedBy: [], reviews: [] },
-                { id: 5, isbn: "9789792212748", title: "Cantik Itu Luka", author: "Eka Kurniawan", year: 2002, publisher: "Gramedia Pustaka Utama", cover: "https://cdn.gramedia.com/uploads/items/cantik_itu_luka_cov_baru.jpg", description: "Dengan gaya realisme magis, novel ini menceritakan sejarah Indonesia melalui kisah tragis sebuah keluarga.", genre: "Fiksi, Sastra", status: "borrowed", borrowedBy: "siti", rating: 4.6, totalRatings: 850, wishlistedBy: [], reviews: [] },
-                { id: 6, isbn: "9786022081514", title: "Garis Waktu", author: "Fiersa Besari", year: 2016, publisher: "Media Kita", cover: "https://cdn.gramedia.com/uploads/items/9786022081514_garis_waktu.jpg", description: "Kumpulan tulisan yang merangkum perjalanan perasaan, mulai dari perkenalan hingga patah hati.", genre: "Romansa, Prosa", status: "available", rating: 4.5, totalRatings: 930, wishlistedBy: [], reviews: [] },
-                { id: 7, isbn: "9786020626388", title: "Atomic Habits", author: "James Clear", year: 2018, publisher: "Gramedia Pustaka Utama", cover: "https://cdn.gramedia.com/uploads/items/atomic_habits_perubahan_kecil_yang_memberikan_hasil_luar_biasa.jpg", description: "Panduan praktis untuk membangun kebiasaan baik dan menghilangkan kebiasaan buruk melalui perubahan-perubahan kecil.", genre: "Self-Help, Produktivitas", status: "available", rating: 4.8, totalRatings: 2100, wishlistedBy: [], reviews: [] },
-                { id: 8, isbn: "9789792248518", title: "Negeri 5 Menara", author: "Ahmad Fuadi", year: 2009, publisher: "Gramedia Pustaka Utama", cover: "https://cdn.gramedia.com/uploads/items/negeri_5_menara_edisi_baru.jpg", description: "Kisah inspiratif tentang enam santri dari berbagai daerah yang berjuang menuntut ilmu di Pondok Madani.", genre: "Inspiratif, Fiksi", status: "available", rating: 4.7, totalRatings: 1300, wishlistedBy: [], reviews: [] },
-                { id: 9, isbn: "9789791227740", title: "Perahu Kertas", author: "Dee Lestari", year: 2009, publisher: "Bentang Pustaka", cover: "https://cdn.gramedia.com/uploads/items/perahu-kertas.jpg", description: "Kisah cinta yang unik antara Keenan, seorang pelukis, dan Kugy, seorang penulis dongeng.", genre: "Romansa, Fiksi", status: "available", rating: 4.6, totalRatings: 1050, wishlistedBy: [], reviews: [] },
-                { id: 10, isbn: "9786020822129", title: "Pulang", author: "Tere Liye", year: 2015, publisher: "Republika Penerbit", cover: "https://cdn.gramedia.com/uploads/items/pulang-tere-liye-cover-baru.jpg", description: "Novel aksi yang menceritakan perjalanan seorang tukang pukul dari keluarga bayangan penguasa ekonomi hitam.", genre: "Aksi, Fiksi", status: "available", rating: 4.8, totalRatings: 1400, wishlistedBy: [], reviews: [] },
-                { id: 11, isbn: "9786237284569", title: "The Psychology of Money", author: "Morgan Housel", year: 2020, publisher: "Baca", cover: "https://cdn.gramedia.com/uploads/items/the_psychology_of_money.jpg", description: "Pelajaran abadi tentang kekayaan, keserakahan, dan kebahagiaan melalui 19 cerita pendek.", genre: "Keuangan, Self-Help", status: "available", rating: 4.7, totalRatings: 1800, wishlistedBy: [], reviews: [] },
-                { id: 12, isbn: "9786024526981", title: "Sebuah Seni untuk Bersikap Bodo Amat", author: "Mark Manson", year: 2016, publisher: "Grasindo", cover: "https://cdn.gramedia.com/uploads/items/sebuah-seni-untuk-bersikap-bodo-amat.jpg", description: "Pendekatan generasi baru untuk buku self-help, yang menunjukkan cara untuk berhenti mencoba menjadi positif sepanjang waktu.", genre: "Self-Help, Psikologi", status: "available", rating: 4.5, totalRatings: 2500, wishlistedBy: [], reviews: [] },
+                { id: 1, isbn: "9789791227757", title: "Laskar Pelangi", author: "Andrea Hirata", year: 2005, publisher: "Bentang Pustaka", cover: "https://cdn.gramedia.com/uploads/items/9786230800041_Laskar_Pelangi.jpg", description: "Sebuah novel inspiratif tentang persahabatan dan perjuangan 10 anak di Belitung untuk terus bersekolah.", genre: "Fiksi, Inspiratif", status: "available", borrowInfo: null, rating: 4.8, totalRatings: 1250, wishlistedBy: [], reviews: [{username: 'siti', rating: 5, text: 'Buku yang sangat menginspirasi!'}] },
+                { id: 2, isbn: "9789799731234", title: "Bumi Manusia", author: "Pramoedya Ananta Toer", year: 1980, publisher: "Hasta Mitra", cover: "https://cdn.gramedia.com/uploads/items/bumi-manusia.jpg", description: "Kisah Minke di era kolonial Hindia Belanda, mengeksplorasi tema nasionalisme, cinta, dan perlawanan.", genre: "Sejarah, Fiksi", status: "borrowed", borrowInfo: { user: "joko", dueDate: new Date().getTime() + 3 * 24 * 60 * 60 * 1000 }, rating: 4.9, totalRatings: 980, wishlistedBy: ['siti'], reviews: [{username: 'joko', rating: 5, text: 'Karya sastra terbaik Indonesia.'}] },
+                { id: 3, isbn: "9786024122619", title: "Filosofi Teras", author: "Henry Manampiring", year: 2018, publisher: "Kompas Gramedia", cover: "https://cdn.gramedia.com/uploads/items/filosofi_teras_c-1_revisi_final.jpg", description: "Pengantar filsafat Stoisisme kuno yang relevan untuk kehidupan modern, membantu mengatasi emosi negatif.", genre: "Self-Help, Filsafat", status: "available", borrowInfo: null, rating: 4.7, totalRatings: 1120, wishlistedBy: [], reviews: [] },
+                { id: 4, isbn: "9786024244588", title: "Sapiens: Riwayat Singkat Umat Manusia", author: "Yuval Noah Harari", year: 2011, publisher: "KPG", cover: "https://cdn.gramedia.com/uploads/items/sapiens-riwayat-singkat-umat-manusia.jpg", description: "Sebuah penelusuran sejarah umat manusia dari Zaman Batu hingga Abad ke-21.", genre: "Sains, Sejarah", status: "available", borrowInfo: null, rating: 4.9, totalRatings: 1500, wishlistedBy: [], reviews: [] },
+                { id: 5, isbn: "9789792212748", title: "Cantik Itu Luka", author: "Eka Kurniawan", year: 2002, publisher: "Gramedia Pustaka Utama", cover: "https://cdn.gramedia.com/uploads/items/cantik_itu_luka_cov_baru.jpg", description: "Dengan gaya realisme magis, novel ini menceritakan sejarah Indonesia melalui kisah tragis sebuah keluarga.", genre: "Fiksi, Sastra", status: "borrowed", borrowInfo: { user: "siti", dueDate: new Date().getTime() - 1 * 24 * 60 * 60 * 1000 }, rating: 4.6, totalRatings: 850, wishlistedBy: [], reviews: [] },
+                { id: 6, isbn: "9786022081514", title: "Garis Waktu", author: "Fiersa Besari", year: 2016, publisher: "Media Kita", cover: "https://cdn.gramedia.com/uploads/items/9786022081514_garis_waktu.jpg", description: "Kumpulan tulisan yang merangkum perjalanan perasaan, mulai dari perkenalan hingga patah hati.", genre: "Romansa, Prosa", status: "available", borrowInfo: null, rating: 4.5, totalRatings: 930, wishlistedBy: [], reviews: [] },
+                { id: 7, isbn: "9786020626388", title: "Atomic Habits", author: "James Clear", year: 2018, publisher: "Gramedia Pustaka Utama", cover: "https://cdn.gramedia.com/uploads/items/atomic_habits_perubahan_kecil_yang_memberikan_hasil_luar_biasa.jpg", description: "Panduan praktis untuk membangun kebiasaan baik dan menghilangkan kebiasaan buruk melalui perubahan-perubahan kecil.", genre: "Self-Help, Produktivitas", status: "available", borrowInfo: null, rating: 4.8, totalRatings: 2100, wishlistedBy: [], reviews: [] },
+                { id: 8, isbn: "9789792248518", title: "Negeri 5 Menara", author: "Ahmad Fuadi", year: 2009, publisher: "Gramedia Pustaka Utama", cover: "https://cdn.gramedia.com/uploads/items/negeri_5_menara_edisi_baru.jpg", description: "Kisah inspiratif tentang enam santri dari berbagai daerah yang berjuang menuntut ilmu di Pondok Madani.", genre: "Inspiratif, Fiksi", status: "available", borrowInfo: null, rating: 4.7, totalRatings: 1300, wishlistedBy: [], reviews: [] },
+                { id: 9, isbn: "9789791227740", title: "Perahu Kertas", author: "Dee Lestari", year: 2009, publisher: "Bentang Pustaka", cover: "https://cdn.gramedia.com/uploads/items/perahu-kertas.jpg", description: "Kisah cinta yang unik antara Keenan, seorang pelukis, dan Kugy, seorang penulis dongeng.", genre: "Romansa, Fiksi", status: "available", borrowInfo: null, rating: 4.6, totalRatings: 1050, wishlistedBy: [], reviews: [] },
+                { id: 10, isbn: "9786020822129", title: "Pulang", author: "Tere Liye", year: 2015, publisher: "Republika Penerbit", cover: "https://cdn.gramedia.com/uploads/items/pulang-tere-liye-cover-baru.jpg", description: "Novel aksi yang menceritakan perjalanan seorang tukang pukul dari keluarga bayangan penguasa ekonomi hitam.", genre: "Aksi, Fiksi", status: "available", borrowInfo: null, rating: 4.8, totalRatings: 1400, wishlistedBy: [], reviews: [] },
+                { id: 11, isbn: "9786237284569", title: "The Psychology of Money", author: "Morgan Housel", year: 2020, publisher: "Baca", cover: "https://cdn.gramedia.com/uploads/items/the_psychology_of_money.jpg", description: "Pelajaran abadi tentang kekayaan, keserakahan, dan kebahagiaan melalui 19 cerita pendek.", genre: "Keuangan, Self-Help", status: "available", borrowInfo: null, rating: 4.7, totalRatings: 1800, wishlistedBy: [], reviews: [] },
+                { id: 12, isbn: "9786024526981", title: "Sebuah Seni untuk Bersikap Bodo Amat", author: "Mark Manson", year: 2016, publisher: "Grasindo", cover: "https://cdn.gramedia.com/uploads/items/sebuah-seni-untuk-bersikap-bodo-amat.jpg", description: "Pendekatan generasi baru untuk buku self-help, yang menunjukkan cara untuk berhenti mencoba menjadi positif sepanjang waktu.", genre: "Self-Help, Psikologi", status: "available", borrowInfo: null, rating: 4.5, totalRatings: 2500, wishlistedBy: [], reviews: [] },
             ];
             
             // --- VARIABEL GLOBAL & STATE ---
@@ -417,8 +487,11 @@
             let bookRequests = [];
             let donations = [];
             let news = [];
+            let feedback = [];
+            let messages = [];
             let lastRead = {};
             let quotes = {};
+            let theme = 'light';
             let currentSession = null;
             
             // --- INISIALISASI DATA ---
@@ -441,8 +514,12 @@
                 bookRequests = JSON.parse(localStorage.getItem('ePerpusBookRequests')) || [];
                 donations = JSON.parse(localStorage.getItem('ePerpusDonations')) || [];
                 news = JSON.parse(localStorage.getItem('ePerpusNews')) || defaultNews;
+                feedback = JSON.parse(localStorage.getItem('ePerpusFeedback')) || [];
+                messages = JSON.parse(localStorage.getItem('ePerpusMessages')) || [];
                 lastRead = JSON.parse(localStorage.getItem('ePerpusLastRead')) || {};
                 quotes = JSON.parse(localStorage.getItem('ePerpusQuotes')) || {};
+                theme = localStorage.getItem('ePerpusTheme') || 'light';
+                applyTheme(theme);
                 saveAllStates();
             };
             
@@ -453,8 +530,11 @@
             const saveBookRequestsState = () => localStorage.setItem('ePerpusBookRequests', JSON.stringify(bookRequests));
             const saveDonationsState = () => localStorage.setItem('ePerpusDonations', JSON.stringify(donations));
             const saveNewsState = () => localStorage.setItem('ePerpusNews', JSON.stringify(news));
+            const saveFeedbackState = () => localStorage.setItem('ePerpusFeedback', JSON.stringify(feedback));
             const saveLastReadState = () => localStorage.setItem('ePerpusLastRead', JSON.stringify(lastRead));
             const saveQuotesState = () => localStorage.setItem('ePerpusQuotes', JSON.stringify(quotes));
+            const saveMessagesState = () => localStorage.setItem('ePerpusMessages', JSON.stringify(messages));
+            const saveThemeState = () => localStorage.setItem('ePerpusTheme', theme);
 
             const saveAllStates = () => {
                 saveBooksState();
@@ -465,7 +545,38 @@
                 saveNewsState();
                 saveLastReadState();
                 saveQuotesState();
+                saveFeedbackState();
+                saveMessagesState();
+                saveThemeState();
             };
+
+            // --- FUNGSI TEMA ---
+            const themeToggleBtn = document.getElementById('themeToggleBtn');
+            const sunIcon = themeToggleBtn.querySelector('[data-lucide="sun"]');
+            const moonIcon = themeToggleBtn.querySelector('[data-lucide="moon"]');
+            
+            const applyTheme = (newTheme) => {
+                theme = newTheme;
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                    sunIcon.classList.remove('dark:hidden');
+                    moonIcon.classList.add('dark:block');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    sunIcon.classList.remove('dark:hidden');
+                    moonIcon.classList.remove('dark:block');
+                }
+                // Toggle icon visibility based on the new theme
+                sunIcon.style.display = theme === 'dark' ? 'block' : 'none';
+                moonIcon.style.display = theme === 'light' ? 'block' : 'none';
+                saveThemeState();
+            };
+
+            themeToggleBtn.addEventListener('click', () => {
+                const newTheme = theme === 'light' ? 'dark' : 'light';
+                applyTheme(newTheme);
+            });
+
 
             // --- BAGIAN AUTENTIKASI ---
             const authContainer = document.getElementById('authContainer');
@@ -511,7 +622,7 @@
             const modalContent = document.getElementById('modalContent');
             const noResultsDiv = document.getElementById('no-results');
             const sessionInfoDiv = document.getElementById('sessionInfo');
-            const userMenuDiv = document.getElementById('userMenu');
+            const userActionsDiv = document.getElementById('userActions');
             const adminModal = document.getElementById('adminModal');
             const adminForm = document.getElementById('adminForm');
             const cancelAdminModal = document.getElementById('cancelAdminModal');
@@ -533,6 +644,10 @@
             const newsAdminModal = document.getElementById('newsAdminModal');
             const newsAdminForm = document.getElementById('newsAdminForm');
             const newsModal = document.getElementById('newsModal');
+            const feedbackModal = document.getElementById('feedbackModal');
+            const feedbackForm = document.getElementById('feedbackForm');
+            const chatModal = document.getElementById('chatModal');
+            const chatForm = document.getElementById('chatForm');
             
             const startApp = (session) => {
                 currentSession = session;
@@ -540,34 +655,36 @@
                 authContainer.classList.add('hidden');
                 appContainer.classList.remove('hidden');
                 
-                sessionInfoDiv.innerHTML = `<p class="font-semibold">${session.username}</p><p class="text-sm text-gray-500 capitalize">${session.role}</p><button id="logoutBtn" class="text-sm text-amber-600 hover:underline">Logout</button>`;
+                sessionInfoDiv.innerHTML = `<p class="font-semibold">${session.username}</p><p class="text-sm text-gray-500 dark:text-gray-400 capitalize">${session.role}</p><button id="logoutBtn" class="text-sm text-amber-600 hover:underline dark:text-amber-400">Logout</button>`;
                 document.getElementById('logoutBtn').addEventListener('click', () => {
                     sessionStorage.removeItem('ePerpusSession');
                     document.body.classList.remove('app-background');
                     window.location.reload();
                 });
                 
-                renderUserMenu();
+                renderUserActions();
                 renderNews();
                 renderContinueReading();
                 renderBooks(books);
+                checkOverdueBooks(); // Check for overdue books on app start
                 renderNotifications();
                 lucide.createIcons();
             };
 
-            const renderUserMenu = () => {
-                userMenuDiv.innerHTML = '';
+            const renderUserActions = () => {
+                userActionsDiv.innerHTML = '';
                 if (currentSession.role === 'admin') {
-                    userMenuDiv.innerHTML = `
-                        <button onclick="openAdminModal()" class="bg-amber-600 text-white p-2 rounded-full hover:bg-amber-700 transition shadow-sm" title="Tambah Buku"><i data-lucide="plus"></i></button>
-                        <button onclick="openAdminDashboard()" class="bg-gray-600 text-white p-2 rounded-full hover:bg-gray-700 transition shadow-sm" title="Dashboard Admin"><i data-lucide="layout-dashboard"></i></button>
+                    userActionsDiv.innerHTML = `
+                        <button onclick="openAdminModal()" class="flex items-center gap-2 bg-amber-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-amber-700 transition shadow-sm"><i data-lucide="plus" class="w-4 h-4"></i> Tambah Buku</button>
+                        <button onclick="openAdminDashboard()" class="flex items-center gap-2 bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-800 transition shadow-sm"><i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard Admin</button>
                     `;
                 } else {
-                    userMenuDiv.innerHTML = `
-                        <button onclick="openRequestModal()" class="bg-teal-600 text-white p-2 rounded-full hover:bg-teal-700 transition shadow-sm" title="Minta Buku"><i data-lucide="book-plus"></i></button>
-                        <button onclick="openFriendsModal()" class="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700 transition shadow-sm" title="Teman Baca"><i data-lucide="users"></i></button>
-                        <button onclick="openDonationModal()" class="bg-pink-600 text-white p-2 rounded-full hover:bg-pink-700 transition shadow-sm" title="Donasi"><i data-lucide="gift"></i></button>
-                        <button onclick="openDonationHistoryModal()" class="bg-purple-600 text-white p-2 rounded-full hover:bg-purple-700 transition shadow-sm" title="Riwayat Donasi"><i data-lucide="history"></i></button>
+                    userActionsDiv.innerHTML = `
+                        <button onclick="openRequestModal()" class="flex items-center gap-2 bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-700 transition shadow-sm"><i data-lucide="book-plus" class="w-4 h-4"></i> Minta Buku</button>
+                        <button onclick="openFriendsModal()" class="flex items-center gap-2 bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition shadow-sm"><i data-lucide="users" class="w-4 h-4"></i> Teman Baca</button>
+                        <button onclick="openFeedbackModal()" class="flex items-center gap-2 bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-700 transition shadow-sm"><i data-lucide="message-square-quote" class="w-4 h-4"></i> Saran & Masukan</button>
+                        <button onclick="openDonationModal()" class="flex items-center gap-2 bg-pink-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-pink-700 transition shadow-sm"><i data-lucide="gift" class="w-4 h-4"></i> Donasi</button>
+                        <button onclick="openDonationHistoryModal()" class="flex items-center gap-2 bg-purple-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-purple-700 transition shadow-sm"><i data-lucide="history" class="w-4 h-4"></i> Riwayat Donasi</button>
                     `;
                 }
                 lucide.createIcons();
@@ -577,7 +694,7 @@
                 if (news.length > 0) {
                     const latestNews = [...news].sort((a, b) => b.timestamp - a.timestamp)[0];
                     newsContainer.innerHTML = `
-                        <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-800 p-4 rounded-r-lg shadow-md flex items-center justify-between">
+                        <div class="bg-blue-100 dark:bg-blue-900/50 border-l-4 border-blue-500 text-blue-800 dark:text-blue-200 p-4 rounded-r-lg shadow-md flex items-center justify-between">
                             <div class="flex items-center flex-1 min-w-0">
                                 <i data-lucide="megaphone" class="w-8 h-8 mr-4 flex-shrink-0"></i>
                                 <div class="min-w-0">
@@ -601,7 +718,7 @@
                     const book = books.find(b => b.id === lastReadBookId);
                     if (book) {
                         continueReadingDiv.innerHTML = `
-                             <div class="bg-amber-100 border-l-4 border-amber-500 text-amber-700 p-4 rounded-r-lg shadow-md flex items-center justify-between">
+                             <div class="bg-amber-100 dark:bg-amber-900/50 border-l-4 border-amber-500 text-amber-800 dark:text-amber-200 p-4 rounded-r-lg shadow-md flex items-center justify-between">
                                 <div class="flex items-center">
                                     <i data-lucide="book-open" class="w-6 h-6 mr-3"></i>
                                     <div>
@@ -638,13 +755,13 @@
                  noResultsDiv.classList.toggle('hidden', booksToRender.length > 0);
                  
                 booksToRender.forEach(book => {
-                    const statusClass = book.status === 'available' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800';
+                    const statusClass = book.status === 'available' ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300';
                     const bookCard = `
-                        <div class="book-card bg-white rounded-lg shadow-md overflow-hidden cursor-pointer group flex flex-col" onclick="openBookModal(${book.id})">
+                        <div class="book-card bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden cursor-pointer group flex flex-col" onclick="openBookModal(${book.id})">
                             <img src="${book.cover}" alt="Sampul ${book.title}" class="w-full h-56 object-cover" onerror="this.src='https://placehold.co/400x600/e2e8f0/475569?text=Gambar+Tidak+Ditemukan'">
                             <div class="p-4 flex flex-col flex-grow">
-                                <h3 class="font-bold text-md text-gray-800 group-hover:text-amber-700 truncate">${book.title}</h3>
-                                <p class="text-sm text-gray-500 mb-2">${book.author}</p>
+                                <h3 class="font-bold text-md text-gray-800 dark:text-gray-100 group-hover:text-amber-700 dark:group-hover:text-amber-400 truncate">${book.title}</h3>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">${book.author}</p>
                                 <div class="mt-auto flex justify-between items-center pt-2">
                                      <span class="text-xs font-semibold px-2 py-1 ${statusClass} rounded-full">${book.status === 'available' ? 'Tersedia' : 'Dipinjam'}</span>
                                      <div class="flex items-center gap-1 text-sm text-amber-500">
@@ -661,7 +778,7 @@
             };
 
             // --- FUNGSI MODAL ---
-            const openModal = (modalElement) => {
+            window.openModal = (modalElement) => {
                 modalElement.classList.remove('hidden');
                 modalElement.classList.add('flex');
                 setTimeout(() => {
@@ -671,7 +788,7 @@
                 document.body.style.overflow = 'hidden';
             };
 
-            const closeModal = (modalElement) => {
+            window.closeModal = (modalElement) => {
                 const content = modalElement.children[0];
                 if (content) content.classList.add('scale-95', 'opacity-0');
                 setTimeout(() => {
@@ -690,11 +807,25 @@
                 saveLastReadState();
                 renderContinueReading();
 
+                let dueDateHTML = '';
+                if (book.status === 'borrowed' && book.borrowInfo?.user === currentSession.username) {
+                    const dueDate = new Date(book.borrowInfo.dueDate);
+                    const now = new Date();
+                    const diffTime = dueDate - now;
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    if (diffDays > 0) {
+                         dueDateHTML = `<div class="mt-4 p-3 bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 rounded-lg text-sm flex items-center gap-2"><i data-lucide="timer" class="w-4 h-4"></i> Batas waktu pengembalian dalam <strong>${diffDays} hari</strong>.</div>`;
+                    } else {
+                         dueDateHTML = `<div class="mt-4 p-3 bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200 rounded-lg text-sm flex items-center gap-2"><i data-lucide="alert-triangle" class="w-4 h-4"></i> Buku ini sudah <strong>lewat batas waktu</strong>!</div>`;
+                    }
+                }
+
+
                 let actionButton = '';
                 if (currentSession.role === 'user') {
                     if (book.status === 'available') {
                         actionButton = `<button onclick="borrowBook(${book.id})" class="w-full sm:w-auto flex-1 bg-amber-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-amber-700 transition flex items-center justify-center gap-2"><i data-lucide="book-down" class="w-5 h-5"></i> Pinjam Buku</button>`;
-                    } else if (book.borrowedBy === currentSession.username) {
+                    } else if (book.borrowInfo?.user === currentSession.username) {
                         actionButton = `<button onclick="returnBook(${book.id})" class="w-full sm:w-auto flex-1 bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition flex items-center justify-center gap-2"><i data-lucide="book-up" class="w-5 h-5"></i> Kembalikan Buku</button>`;
                     } else {
                         const isWishlisted = book.wishlistedBy?.includes(currentSession.username);
@@ -707,47 +838,48 @@
                 let adminButtons = '';
                 if (currentSession.role === 'admin') {
                      adminButtons = `
-                        <button onclick="openAdminModal(${book.id})" class="p-2 rounded-full hover:bg-gray-200 transition"><i data-lucide="edit" class="w-5 h-5 text-gray-600"></i></button>
-                        <button onclick="deleteBook(${book.id})" class="p-2 rounded-full hover:bg-gray-200 transition"><i data-lucide="trash-2" class="w-5 h-5 text-red-600"></i></button>
+                        <button onclick="openAdminModal(${book.id})" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"><i data-lucide="edit" class="w-5 h-5 text-gray-600 dark:text-gray-300"></i></button>
+                        <button onclick="deleteBook(${book.id})" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"><i data-lucide="trash-2" class="w-5 h-5 text-red-600"></i></button>
                     `;
                 }
                 
                 // Fitur 2: Penyimpanan dan Berbagi Kutipan
                 const quotesHTML = `
-                    <div class="mt-6 border-t pt-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">Kutipan Favorit</h3>
+                    <div class="mt-6 border-t dark:border-gray-700 pt-6">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">Kutipan Favorit</h3>
                         <div id="quotesList" class="space-y-4 mb-6 max-h-48 overflow-y-auto pr-2"></div>
                         <div>
-                            <textarea id="newQuoteText" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" rows="3" placeholder="Simpan kutipan favorit dari buku ini..."></textarea>
+                            <textarea id="newQuoteText" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-800" rows="3" placeholder="Simpan kutipan favorit dari buku ini..."></textarea>
                             <button onclick="saveQuote(${book.id})" class="mt-2 w-full sm:w-auto bg-amber-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-amber-600 transition">Simpan Kutipan</button>
                         </div>
                     </div>
                 `;
 
                 modalContent.innerHTML = `
-                    <div class="w-full md:w-1/3 flex-shrink-0 bg-gray-100 flex items-center justify-center">
+                    <div class="w-full md:w-1/3 flex-shrink-0 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
                          <img src="${book.cover}" alt="Sampul ${book.title}" class="w-full h-full object-contain md:object-cover" onerror="this.src='https://placehold.co/400x600/e2e8f0/475569?text=Image+Not+Found'">
                     </div>
                     <div class="p-6 md:p-8 flex flex-col flex-grow overflow-y-auto">
                         <div class="flex-grow">
                             <div class="flex justify-between items-start">
-                                <span class="text-sm font-semibold mb-2 inline-block py-1 px-3 leading-none text-center whitespace-nowrap align-baseline rounded-full bg-amber-100 text-amber-800">${book.genre}</span>
+                                <span class="text-sm font-semibold mb-2 inline-block py-1 px-3 leading-none text-center whitespace-nowrap align-baseline rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300">${book.genre}</span>
                                 <div class="flex items-center gap-2">${adminButtons}</div>
                             </div>
-                            <h2 class="text-3xl font-bold text-gray-900 mt-1">${book.title}</h2>
-                            <p class="text-lg text-gray-500 mb-4">oleh ${book.author}</p>
-                             <p class="text-sm text-gray-500 mb-4">ISBN: ${book.isbn}</p>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-1">${book.title}</h2>
+                            <p class="text-lg text-gray-500 dark:text-gray-400 mb-4">oleh ${book.author}</p>
+                             <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">ISBN: ${book.isbn}</p>
                             <div class="flex items-center gap-2 mb-4 text-amber-500">
                                 <i data-lucide="star" class="w-5 h-5 fill-current"></i>
                                 <span class="font-bold text-lg">${book.rating.toFixed(1)}</span>
                                 <span class="text-gray-400 text-sm">(${book.totalRatings} ratings)</span>
                             </div>
-                            <p class="text-gray-700 leading-relaxed">${book.description}</p>
+                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed">${book.description}</p>
+                            ${dueDateHTML}
                             ${currentSession.role === 'user' ? quotesHTML : ''}
                         </div>
                         <div class="mt-8 flex flex-col sm:flex-row gap-3">
                             ${actionButton}
-                            <button onclick="closeModal(bookModal)" class="w-full sm:w-auto bg-gray-200 text-gray-800 font-bold py-3 px-6 rounded-lg hover:bg-gray-300 transition">Tutup</button>
+                            <button onclick="closeModal(bookModal)" class="w-full sm:w-auto bg-gray-200 text-gray-800 font-bold py-3 px-6 rounded-lg hover:bg-gray-300 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 transition">Tutup</button>
                         </div>
                     </div>
                 `;
@@ -762,8 +894,8 @@
                 const bookQuotes = quotes[bookId]?.[currentSession.username] || [];
                 if (bookQuotes.length > 0) {
                     quotesListDiv.innerHTML = bookQuotes.map(quote => `
-                        <div class="bg-gray-50 p-3 rounded-lg">
-                            <p class="text-gray-600 italic">"${quote.text}"</p>
+                        <div class="bg-gray-50 dark:bg-gray-800/50 p-3 rounded-lg">
+                            <p class="text-gray-600 dark:text-gray-300 italic">"${quote.text}"</p>
                             <div class="text-right mt-2 flex gap-2 justify-end">
                                 <button onclick="shareQuote('${btoa(encodeURIComponent(quote.text))}', '${btoa(encodeURIComponent(books.find(b=>b.id===bookId).title))}')" class="p-1 text-blue-500 hover:text-blue-700"><i data-lucide="share-2" class="w-4 h-4"></i></button>
                                 <button onclick="deleteQuote(${bookId}, '${quote.id}')" class="p-1 text-red-500 hover:text-red-700"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
@@ -771,7 +903,7 @@
                         </div>
                     `).join('');
                 } else {
-                    quotesListDiv.innerHTML = `<p class="text-sm text-gray-500">Anda belum menyimpan kutipan dari buku ini.</p>`;
+                    quotesListDiv.innerHTML = `<p class="text-sm text-gray-500 dark:text-gray-400">Anda belum menyimpan kutipan dari buku ini.</p>`;
                 }
                 lucide.createIcons();
             };
@@ -854,53 +986,63 @@
                 const unreadCount = userNotifications.filter(n => !n.read).length;
                 notificationDot.classList.toggle('hidden', unreadCount === 0);
                 if(userNotifications.length > 0) {
-                    notificationDropdown.innerHTML = `<div class="p-3 font-semibold border-b text-sm">Notifikasi</div>
+                    notificationDropdown.innerHTML = `<div class="p-3 font-semibold border-b dark:border-gray-700 text-sm">Notifikasi</div>
                         <div class="max-h-80 overflow-y-auto">
-                            ${userNotifications.map(n => `<div onclick="openNotification(${n.id})" class="p-3 border-b hover:bg-gray-50 cursor-pointer ${n.read ? 'text-gray-500' : 'bg-amber-50'}">
+                            ${userNotifications.map(n => `<div onclick="openNotification(${n.id})" class="p-3 border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer ${n.read ? 'text-gray-500 dark:text-gray-400' : 'bg-amber-50 dark:bg-amber-900/50'}">
                                     <p class="text-sm">${n.message}</p>
                                     <p class="text-xs text-gray-400 mt-1">${new Date(n.timestamp).toLocaleString()}</p>
                                 </div>`).join('')}
                         </div>`;
                 } else {
-                     notificationDropdown.innerHTML = `<div class="p-4 text-center text-sm text-gray-500">Tidak ada notifikasi.</div>`;
+                     notificationDropdown.innerHTML = `<div class="p-4 text-center text-sm text-gray-500 dark:text-gray-400">Tidak ada notifikasi.</div>`;
                 }
             };
             
             window.openNotification = (notifId) => {
                  const notifIndex = notifications.findIndex(n => n.id === notifId);
                  if (notifIndex > -1) {
-                     const bookId = notifications[notifIndex].bookId;
-                     notifications[notifIndex].read = true;
+                     const notification = notifications[notifIndex];
+                     notification.read = true;
                      saveNotificationsState();
                      renderNotifications();
-                     openBookModal(bookId);
+                      // Handle different notification types
+                     if (notification.type === 'friend_request') {
+                         openFriendsModal();
+                     } else if (notification.type === 'new_message') {
+                         openChatModal(notification.sender);
+                     } else if (notification.bookId) { // Default is book notification
+                         openBookModal(notification.bookId);
+                     }
+                     
                      notificationDropdown.classList.add('hidden');
                  }
             };
 
             window.openRequestModal = () => openModal(requestModal);
 
+            window.openFeedbackModal = () => openModal(feedbackModal);
+
             const renderBookRequests = () => {
                 const requestList = document.getElementById('requestList');
                  requestList.innerHTML = bookRequests.length > 0 ? bookRequests.map(req => `
-                    <div class="bg-gray-50 p-3 rounded-lg flex justify-between items-center">
+                    <div class="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg flex justify-between items-center">
                         <div>
-                            <p class="font-semibold">${req.title} <span class="font-normal text-gray-600">oleh ${req.author}</span></p>
-                            <p class="text-sm text-gray-500">Diminta oleh: ${req.requestedBy}</p>
+                            <p class="font-semibold">${req.title} <span class="font-normal text-gray-600 dark:text-gray-400">oleh ${req.author}</span></p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Diminta oleh: ${req.requestedBy}</p>
                         </div>
                         <div class="flex gap-2">
                              <button onclick="fulfillRequest('${req.id}')" class="bg-green-500 text-white text-xs font-bold py-1 px-3 rounded-full hover:bg-green-600">Penuhi</button>
                              <button onclick="rejectRequest('${req.id}')" class="bg-red-500 text-white text-xs font-bold py-1 px-3 rounded-full hover:bg-red-600">Tolak</button>
                         </div>
                     </div>
-                `).join('') : '<p class="text-gray-500">Tidak ada permintaan buku saat ini.</p>';
+                `).join('') : '<p class="text-gray-500 dark:text-gray-400">Tidak ada permintaan buku saat ini.</p>';
             };
 
             const renderUserManagement = () => {
                 const userListDiv = document.getElementById('userList');
                 const regularUsers = users.filter(u => u.role === 'user');
                 userListDiv.innerHTML = regularUsers.length > 0 ? regularUsers.map(user => `
-                     <div class="bg-gray-50 p-3 rounded-lg flex justify-between items-center">
+                     <div class="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg flex justify-between items-center">
                         <div>
                             <p class="font-semibold">${user.username}</p>
                         </div>
@@ -909,7 +1051,25 @@
                              <button onclick="deleteUser('${user.username}')" class="bg-red-500 text-white text-xs font-bold py-1 px-3 rounded-full hover:bg-red-600">Hapus</button>
                         </div>
                     </div>
-                `).join('') : '<p class="text-gray-500">Tidak ada pengguna yang terdaftar.</p>';
+                `).join('') : '<p class="text-gray-500 dark:text-gray-400">Tidak ada pengguna yang terdaftar.</p>';
+                lucide.createIcons();
+            };
+
+            const renderFeedbackManagement = () => {
+                const feedbackListDiv = document.getElementById('feedbackList');
+                const sortedFeedback = [...feedback].sort((a,b) => b.timestamp - a.timestamp);
+                feedbackListDiv.innerHTML = sortedFeedback.length > 0 ? sortedFeedback.map(item => `
+                    <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="font-semibold">${item.subject}</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Oleh: ${item.username} - ${new Date(item.timestamp).toLocaleString()}</p>
+                            </div>
+                            <button onclick="deleteFeedback('${item.id}')" class="text-red-500 hover:text-red-700 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        </div>
+                        <p class="mt-2 text-gray-700 dark:text-gray-300 whitespace-pre-wrap">${item.message}</p>
+                    </div>
+                `).join('') : '<p class="text-gray-500 dark:text-gray-400 text-center">Belum ada saran atau masukan.</p>';
                 lucide.createIcons();
             };
 
@@ -917,17 +1077,17 @@
                 const newsListDiv = document.getElementById('newsManagementList');
                 const sortedNews = [...news].sort((a, b) => b.timestamp - a.timestamp);
                 newsListDiv.innerHTML = sortedNews.length > 0 ? sortedNews.map(item => `
-                     <div class="bg-gray-50 p-3 rounded-lg flex justify-between items-center">
+                     <div class="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg flex justify-between items-center">
                         <div class="min-w-0">
                             <p class="font-semibold truncate">${item.title}</p>
-                            <p class="text-xs text-gray-500">${new Date(item.timestamp).toLocaleString()}</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">${new Date(item.timestamp).toLocaleString()}</p>
                         </div>
                         <div class="flex gap-2 flex-shrink-0">
                              <button onclick="openNewsAdminModal(${item.id})" class="bg-blue-500 text-white text-xs font-bold py-1 px-3 rounded-full hover:bg-blue-600">Edit</button>
                              <button onclick="deleteNews(${item.id})" class="bg-red-500 text-white text-xs font-bold py-1 px-3 rounded-full hover:bg-red-600">Hapus</button>
                         </div>
                     </div>
-                `).join('') : '<p class="text-gray-500">Belum ada berita atau pengumuman.</p>';
+                `).join('') : '<p class="text-gray-500 dark:text-gray-400">Belum ada berita atau pengumuman.</p>';
             };
 
             window.openAdminDashboard = () => {
@@ -937,10 +1097,12 @@
                 const requestsView = document.getElementById('requestsView');
                 const usersView = document.getElementById('usersView');
                 const newsView = document.getElementById('newsView');
+                const feedbackTabBtn = document.getElementById('feedbackTabBtn');
+                const feedbackView = document.getElementById('feedbackView');
 
                 const switchTab = (activeTab) => {
-                    [requestsTabBtn, usersTabBtn, newsTabBtn].forEach(btn => btn.classList.remove('active'));
-                    [requestsView, usersView, newsView].forEach(view => view.classList.add('hidden'));
+                    [requestsTabBtn, usersTabBtn, newsTabBtn, feedbackTabBtn].forEach(btn => btn.classList.remove('active'));
+                    [requestsView, usersView, newsView, feedbackView].forEach(view => view.classList.add('hidden'));
 
                     if (activeTab === 'users') {
                         usersTabBtn.classList.add('active');
@@ -950,6 +1112,10 @@
                         newsTabBtn.classList.add('active');
                         newsView.classList.remove('hidden');
                         renderNewsManagement();
+                    } else if (activeTab === 'feedback') {
+                        feedbackTabBtn.classList.add('active');
+                        feedbackView.classList.remove('hidden');
+                        renderFeedbackManagement();
                     } else { // 'requests' is default
                         requestsTabBtn.classList.add('active');
                         requestsView.classList.remove('hidden');
@@ -960,6 +1126,7 @@
                 requestsTabBtn.onclick = () => switchTab('requests');
                 usersTabBtn.onclick = () => switchTab('users');
                 newsTabBtn.onclick = () => switchTab('news');
+                feedbackTabBtn.onclick = () => switchTab('feedback');
 
                 switchTab('requests'); // Default tab
                 openModal(dashboardModal);
@@ -967,6 +1134,10 @@
 
             window.fulfillRequest = (reqId) => {
                 const request = bookRequests.find(r => r.id === reqId);
+                if (!request) {
+                    showToast("Permintaan buku tidak ditemukan.");
+                    return;
+                }
                 bookRequests = bookRequests.filter(r => r.id !== reqId);
                 saveBookRequestsState();
                 renderBookRequests(); 
@@ -984,12 +1155,12 @@
                 const allNewsList = document.getElementById('allNewsList');
                 const sortedNews = [...news].sort((a,b) => b.timestamp - a.timestamp);
                 allNewsList.innerHTML = sortedNews.length > 0 ? sortedNews.map(item => `
-                    <div class="border-b pb-4">
-                        <h3 class="text-xl font-bold text-gray-800">${item.title}</h3>
+                    <div class="border-b dark:border-gray-700 pb-4">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200">${item.title}</h3>
                         <p class="text-xs text-gray-400 mb-2">${new Date(item.timestamp).toLocaleString()}</p>
-                        <p class="text-gray-600 whitespace-pre-wrap">${item.content}</p>
+                        <p class="text-gray-600 dark:text-gray-300 whitespace-pre-wrap">${item.content}</p>
                     </div>
-                `).join('') : '<p class="text-center text-gray-500">Tidak ada pengumuman saat ini.</p>';
+                `).join('') : '<p class="text-center text-gray-500 dark:text-gray-400">Tidak ada pengumuman saat ini.</p>';
                 openModal(newsModal);
             };
 
@@ -998,14 +1169,19 @@
                 const friendsListDiv = document.getElementById('friendsList');
                 friendsListDiv.innerHTML = users
                     .filter(u => u.username !== currentSession.username && u.role !== 'admin')
-                    .map(user => `
-                    <div class="flex justify-between items-center p-3 hover:bg-gray-50 rounded-lg">
-                        <p class="font-semibold">${user.username}</p>
-                        <button onclick="toggleFriend('${user.username}')" class="${currentUser.friends.includes(user.username) ? 'bg-red-500' : 'bg-blue-500'} text-white text-xs font-bold py-1 px-3 rounded-full hover:opacity-80 transition">
-                            ${currentUser.friends.includes(user.username) ? 'Hapus' : 'Tambah'}
-                        </button>
-                    </div>
-                `).join('');
+                    .map(user => {
+                        const isFriend = currentUser.friends.includes(user.username);
+                        return `
+                        <div class="flex justify-between items-center p-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg">
+                            <p class="font-semibold">${user.username}</p>
+                            <div class="flex items-center gap-2">
+                                ${isFriend ? `<button onclick="openChatModal('${user.username}')" class="bg-green-500 text-white text-xs font-bold py-1 px-3 rounded-full hover:opacity-80 transition">Pesan</button>` : ''}
+                                <button onclick="toggleFriend('${user.username}')" class="${isFriend ? 'bg-red-500' : 'bg-blue-500'} text-white text-xs font-bold py-1 px-3 rounded-full hover:opacity-80 transition">
+                                    ${isFriend ? 'Hapus' : 'Tambah'}
+                                </button>
+                            </div>
+                        </div>
+                    `}).join('');
                 openModal(friendsModal);
             };
 
@@ -1014,11 +1190,53 @@
                 const friendIndex = users[userIndex].friends.indexOf(friendUsername);
                 if (friendIndex > -1) {
                     users[userIndex].friends.splice(friendIndex, 1);
+                    showToast(`Anda menghapus ${friendUsername} dari teman.`);
                 } else {
                     users[userIndex].friends.push(friendUsername);
+                    notifications.push({
+                        id: Date.now() + Math.random(),
+                        userId: friendUsername,
+                        message: `${currentSession.username} telah menambahkan Anda sebagai teman.`,
+                        type: 'friend_request',
+                        read: false,
+                        timestamp: Date.now()
+                    });
+                    saveNotificationsState();
+                    showToast(`Anda menambahkan ${friendUsername} sebagai teman.`);
                 }
                 saveUsersState();
                 openFriendsModal(); // refresh
+            };
+
+            window.openChatModal = (recipientUsername) => {
+                const chatModalTitle = document.getElementById('chatModalTitle');
+                const chatRecipient = document.getElementById('chatRecipient');
+                const chatMessages = document.getElementById('chatMessages');
+
+                chatModalTitle.textContent = `Pesan dengan ${recipientUsername}`;
+                chatRecipient.value = recipientUsername;
+
+                const conversation = messages.filter(
+                    msg => (msg.sender === currentSession.username && msg.recipient === recipientUsername) ||
+                           (msg.sender === recipientUsername && msg.recipient === currentSession.username)
+                ).sort((a, b) => a.timestamp - b.timestamp);
+
+                chatMessages.innerHTML = conversation.map(msg => {
+                    const isSender = msg.sender === currentSession.username;
+                    return `
+                        <div class="flex ${isSender ? 'justify-end' : 'justify-start'}">
+                            <div class="max-w-xs lg:max-w-md px-4 py-2 rounded-2xl ${isSender ? 'bg-amber-500 text-white rounded-br-none' : 'bg-gray-200 text-gray-800 dark:bg-gray-600 dark:text-gray-200 rounded-bl-none'}">
+                                <p>${msg.text}</p>
+                                <p class="text-xs ${isSender ? 'text-amber-100' : 'text-gray-500 dark:text-gray-400'} text-right mt-1">${new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                // Auto-scroll to the latest message
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                openModal(chatModal);
             };
 
             window.openDonationModal = () => openModal(donationModal);
@@ -1027,23 +1245,29 @@
                 const userDonations = donations.filter(d => d.username === currentSession.username);
                 historyList.innerHTML = userDonations.length > 0 ? `
                     <table class="w-full text-left">
-                        <thead class="bg-gray-50 text-xs text-gray-700 uppercase"><tr><th class="p-3">Tanggal</th><th class="p-3">Jumlah</th></tr></thead>
+                        <thead class="bg-gray-50 dark:bg-gray-700 text-xs text-gray-700 dark:text-gray-300 uppercase"><tr><th class="p-3">Tanggal</th><th class="p-3">Jumlah</th></tr></thead>
                         <tbody>
-                            ${userDonations.map(d => `<tr class="border-b"><td class="p-3">${new Date(d.date).toLocaleDateString()}</td><td class="p-3">Rp ${d.amount.toLocaleString('id-ID')}</td></tr>`).join('')}
+                            ${userDonations.map(d => `<tr class="border-b dark:border-gray-700"><td class="p-3">${new Date(d.date).toLocaleDateString()}</td><td class="p-3">Rp ${d.amount.toLocaleString('id-ID')}</td></tr>`).join('')}
                         </tbody>
                     </table>` 
-                    : '<p class="text-center text-gray-500 p-4">Anda belum pernah berdonasi.</p>';
+                    : '<p class="text-center text-gray-500 dark:text-gray-400 p-4">Anda belum pernah berdonasi.</p>';
                 openModal(donationHistoryModal);
             };
 
             window.borrowBook = (bookId) => {
                 const bookIndex = books.findIndex(b => b.id === bookId);
                 if (bookIndex !== -1 && books[bookIndex].status === 'available') {
+                    const dueDate = new Date();
+                    dueDate.setDate(dueDate.getDate() + 7);
                     books[bookIndex].status = 'borrowed';
-                    books[bookIndex].borrowedBy = currentSession.username;
+                    books[bookIndex].borrowInfo = {
+                        user: currentSession.username,
+                        dueDate: dueDate.getTime()
+                    };
                     saveBooksState();
                     closeModal(bookModal);
                     renderBooks(books);
+                    showToast(`Anda berhasil meminjam "${books[bookIndex].title}".`);
                 }
             };
             
@@ -1057,13 +1281,43 @@
                         });
                         books[bookIndex].wishlistedBy = [];
                         saveNotificationsState();
+                        renderNotifications();
                     }
                     books[bookIndex].status = 'available';
-                    delete books[bookIndex].borrowedBy;
+                    books[bookIndex].borrowInfo = null;
                     saveBooksState();
                     closeModal(bookModal);
                     renderBooks(books);
+                    showToast(`Anda telah mengembalikan "${returnedBook.title}".`);
                 }
+            };
+
+            const checkOverdueBooks = () => {
+                if(currentSession.role !== 'user') return;
+
+                const now = new Date().getTime();
+                const userBorrowedBooks = books.filter(b => b.borrowInfo && b.borrowInfo.user === currentSession.username);
+                
+                userBorrowedBooks.forEach(book => {
+                    const dueDate = book.borrowInfo.dueDate;
+                    const daysRemaining = (dueDate - now) / (1000 * 60 * 60 * 24);
+
+                    if (daysRemaining <= 1) { // Due in 1 day or already overdue
+                        const reminderExists = notifications.some(n => n.type === 'due_reminder' && n.bookId === book.id && n.userId === currentSession.username);
+                        if (!reminderExists) {
+                            notifications.push({
+                                id: Date.now() + Math.random(),
+                                userId: currentSession.username,
+                                message: `Batas pinjam buku "${book.title}" akan berakhir atau sudah lewat.`,
+                                bookId: book.id,
+                                type: 'due_reminder',
+                                read: false,
+                                timestamp: Date.now()
+                            });
+                            saveNotificationsState();
+                        }
+                    }
+                });
             };
             
             // --- FUNGSI ADMIN ---
@@ -1184,6 +1438,20 @@
                 };
             };
             
+            window.deleteFeedback = (feedbackId) => {
+                const confirmText = document.getElementById('confirmModalText');
+                const confirmOkBtn = document.getElementById('confirmOkBtn');
+                confirmText.textContent = `Anda yakin ingin menghapus masukan ini?`;
+                openModal(confirmModal);
+                confirmOkBtn.onclick = () => {
+                    feedback = feedback.filter(f => f.id !== feedbackId);
+                    saveFeedbackState();
+                    renderFeedbackManagement();
+                    closeModal(confirmModal);
+                    showToast("Masukan telah dihapus.");
+                };
+            };
+            
             // --- EVENT LISTENERS ---
             searchInput.addEventListener('input', () => {
                 const query = searchInput.value.toLowerCase().trim();
@@ -1214,7 +1482,7 @@
                     const bookIndex = books.findIndex(b => b.id == id);
                     if (bookIndex !== -1) books[bookIndex] = { ...books[bookIndex], ...bookData };
                 } else {
-                    const newBook = { ...bookData, id: Date.now(), status: 'available', rating: 0, totalRatings: 0, wishlistedBy: [], reviews: [] };
+                    const newBook = { ...bookData, id: Date.now(), status: 'available', rating: 0, totalRatings: 0, wishlistedBy: [], reviews: [], borrowInfo: null };
                     books.unshift(newBook);
                 }
                 saveBooksState();
@@ -1293,6 +1561,56 @@
                 showToast('Permintaan buku telah dikirim!');
             });
             
+            chatForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const recipient = document.getElementById('chatRecipient').value;
+                const text = document.getElementById('chatInput').value.trim();
+
+                if (text && recipient) {
+                    const newMessage = {
+                        id: 'msg_' + Date.now(),
+                        sender: currentSession.username,
+                        recipient: recipient,
+                        text: text,
+                        timestamp: Date.now(),
+                    };
+                    messages.push(newMessage);
+                    saveMessagesState();
+
+                    // Create notification for recipient
+                    notifications.push({
+                        id: Date.now() + Math.random(),
+                        userId: recipient,
+                        message: `Anda memiliki pesan baru dari ${currentSession.username}.`,
+                        type: 'new_message',
+                        sender: currentSession.username,
+                        read: false,
+                        timestamp: Date.now()
+                    });
+                    saveNotificationsState();
+                    renderNotifications();
+                    document.getElementById('chatInput').value = '';
+                    openChatModal(recipient); // Refresh chat view
+                }
+            });
+
+            feedbackForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const subject = document.getElementById('feedbackSubject').value;
+                const message = document.getElementById('feedbackMessage').value;
+                feedback.push({
+                    id: 'fb_' + Date.now(),
+                    username: currentSession.username,
+                    subject,
+                    message,
+                    timestamp: Date.now()
+                });
+                saveFeedbackState();
+                feedbackForm.reset();
+                closeModal(feedbackModal);
+                showToast('Terima kasih atas masukan Anda!');
+            });
+
             donationForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const amount = parseInt(document.getElementById('donationAmount').value);
@@ -1317,7 +1635,7 @@
                  }
             });
             
-            [bookModal, adminModal, confirmModal, requestModal, dashboardModal, userAdminModal, friendsModal, donationModal, donationHistoryModal, newsAdminModal, newsModal].forEach(modal => {
+            [bookModal, adminModal, confirmModal, requestModal, dashboardModal, userAdminModal, friendsModal, donationModal, donationHistoryModal, newsAdminModal, newsModal, feedbackModal, chatModal].forEach(modal => {
                 modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal) });
             });
             document.getElementById('confirmCancelBtn').addEventListener('click', () => closeModal(confirmModal));
@@ -1332,4 +1650,3 @@
     </script>
 </body>
 </html>
-
